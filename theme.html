@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title><!--TITLE--></title>
+<style>
+:root{
+  --ink:#1F2933;--ink2:#52606D;--line:#D9DEE5;--page:#fff;--bg:#EEF1F5;
+  --prof:#C0262D;--prof-t:#FDECEC;      /* 1순위 [출제 언급] */
+  --detail:#C2570C;--detail-t:#FFF0E2;  /* 1순위 [자세히 설명] */
+  --skip:#7B8794;--skip-t:#F0F2F5;      /* [출제 제외 언급] */
+  --same:#2F3FA8;--same-t:#ECEFFD;      /* 2순위 동일 교수 기출 */
+  --diff:#64748B;--diff-t:#F1F4F8;      /* 2순위 비동일·미상 기출 */
+  --slide:#1E7F4F;--slide-t:#E8F6EE;    /* 3순위 강의자료 표기·그림·표 */
+  --hl:#FFF176;                         /* [형광펜] */
+  --ai:#6D3FC4;--ai-t:#F4EFFD;          /* AI 추정 (점선) */
+  --must:#0F766E;--must-t:#E3F6F4;      /* [필수 이해] */
+  --trap:#B4236E;--trap-t:#FDEAF3;      /* [놓치기 쉬운 포인트] */
+  --flag:#8A5A00;--flag-t:#FFF6D6;      /* ⚠ 확인 필요 */
+}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",system-ui,sans-serif;
+  line-height:1.8;letter-spacing:-.005em;word-break:keep-all;overflow-wrap:anywhere}
+main{max-width:860px;margin:0 auto;background:var(--page);padding:44px 56px 96px}
+
+/* 제목부 */
+h1{font-size:1.7rem;line-height:1.35;letter-spacing:-.02em;margin:0 0 6px}
+.meta{color:var(--ink2);font-size:.9rem;margin:0 0 26px}
+h2{font-size:1.3rem;line-height:1.4;letter-spacing:-.015em;margin:68px 0 18px;padding-top:18px;border-top:2px solid var(--ink)}
+h3{font-size:1.06rem;line-height:1.5;margin:34px 0 10px}
+section>p,section>ul,section>ol{margin:0 0 16px}
+section>ul,section>ol{padding-left:1.35em}
+section li{margin:0 0 6px}
+.pg{display:inline-block;font-size:.74rem;font-weight:600;color:var(--ink2);border:1px solid var(--line);
+  border-radius:4px;padding:0 6px;margin-left:8px;line-height:1.7;vertical-align:middle;white-space:nowrap;letter-spacing:0}
+a{color:var(--same)}
+
+/* 라벨 칩: 실선 채움 = 출처에 근거 / 점선 = AI 추정 */
+.lb{display:inline-block;font-size:.78rem;font-weight:700;line-height:1.55;padding:0 7px;border-radius:4px;
+  color:#fff;background:var(--c,var(--ink2));white-space:nowrap;margin-right:6px;letter-spacing:0;vertical-align:.06em}
+.lb.in{font-size:.68rem;margin:0 2px 0 4px;vertical-align:.18em}
+.lb.o{background:transparent;color:var(--c,var(--ink2));border:1.5px dashed var(--c,var(--ink2));line-height:1.4}
+.c-prof{--c:var(--prof)}.c-detail{--c:var(--detail)}.c-skip{--c:var(--skip)}.c-same{--c:var(--same)}.c-diff{--c:var(--diff)}
+.c-slide{--c:var(--slide)}.c-ai{--c:var(--ai)}.c-must{--c:var(--must)}.c-trap{--c:var(--trap)}.c-flag{--c:var(--flag)}
+
+/* 박스 공통 */
+.box{--c:var(--ink2);--t:#F5F7FA;margin:24px 0;padding:14px 20px 16px;background:var(--t);
+  border-left:5px solid var(--c);border-radius:0 8px 8px 0}
+.box>p,.box>ul,.box>ol{margin:0 0 10px}
+.box>ul{padding-left:1.3em}
+.box>:last-child{margin-bottom:0}
+.box>.hd{font-weight:700;color:var(--c);margin:0 0 8px}
+.p1{--c:var(--prof);--t:var(--prof-t)}
+.p1d{--c:var(--detail);--t:var(--detail-t)}
+.skip{--c:var(--skip);--t:var(--skip-t);color:var(--ink2)}
+.fig,.tbl{--c:var(--slide);--t:var(--slide-t)}
+.must{--c:var(--must);--t:var(--must-t)}
+.trap{--c:var(--trap);--t:var(--trap-t)}
+.flag{--c:var(--flag);--t:var(--flag-t);font-size:.93rem}
+.ai{--c:var(--ai);--t:var(--ai-t);border:1.5px dashed var(--c);border-radius:8px}
+.qt{break-inside:avoid;margin:8px 0 10px;padding:6px 12px;border-left:3px solid var(--c,var(--ink2));background:rgba(255,255,255,.7);font-size:.95rem}
+.qt::before{content:"강의록";font-size:.7rem;font-weight:700;color:var(--ink2);border:1px solid var(--line);
+  border-radius:3px;padding:0 4px;margin-right:7px;background:#fff;letter-spacing:0}
+.why{font-size:.87rem;color:var(--ink2);margin:0 0 8px}
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:10px 0 12px}
+ol.steps>li{break-inside:avoid;counter-increment:s;position:relative;padding-left:34px;margin:0 0 8px}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:.28em;width:22px;height:22px;border-radius:50%;
+  background:var(--c,var(--ink));color:#fff;font-size:.76rem;font-weight:700;line-height:22px;text-align:center}
+.ask{margin-top:10px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);font-size:.95rem}
+.ask::before{content:"시험에서는 ";font-weight:700;color:var(--c,var(--ink))}
+
+/* 강의자료 표기(본문 인라인) */
+b.bd{font-weight:800;box-shadow:inset 0 -2px 0 var(--slide)}
+mark.hl{background:var(--hl);color:inherit;padding:0 2px;border-radius:2px}
+.hand{color:#1D4ED8;background:#EAF1FF;padding:0 4px;border-radius:3px}
+
+/* 기출 카드 */
+.q{--c:var(--same);--t:var(--same-t);margin:28px 0;border:1.5px solid var(--c);border-radius:10px;overflow:hidden}
+.q.diff{--c:var(--diff);--t:var(--diff-t)}
+.q>.qh{background:var(--c);color:#fff;padding:6px 16px;font-size:.86rem;font-weight:700;display:flex;gap:4px 12px;flex-wrap:wrap}
+.q>.qh span{font-weight:500;opacity:.92}
+.q>.qb{padding:16px 18px 8px;background:var(--t);break-inside:avoid}
+.q .stem{font-weight:600;margin:0 0 10px}
+.q ol.opt{list-style:none;padding:0;margin:0 0 8px}
+.q ol.opt>li{margin:0;padding:2px 0}
+details.ans{border-top:1px dashed var(--c);background:#fff;padding:0 18px}
+details.ans>summary{cursor:pointer;padding:10px 0;font-weight:700;color:var(--c);list-style:none}
+details.ans>summary::-webkit-details-marker{display:none}
+details.ans>summary::before{content:"▸ "}
+details.ans[open]>summary::before{content:"▾ "}
+details.ans>p,details.ans>ul,details.ans>ol{margin:0 0 12px}
+details.ans>h4{font-size:.92rem;margin:16px 0 6px;color:var(--c)}
+details.ans>.box{margin:14px 0}
+.key{font-weight:800}
+ul.optx{list-style:none;padding:0}
+ul.optx>li{margin:0 0 6px;padding-left:1.7em;text-indent:-1.7em}
+ul.optx>li.ok{font-weight:600}
+
+/* 표 */
+.tw{overflow-x:auto;margin:18px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;line-height:1.55}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;background:#fff}
+thead th{background:#EDF0F4;font-weight:700}
+tbody th{background:#F7F8FA;font-weight:700;white-space:nowrap}
+td.dif{background:#FFF9DB;font-weight:600}
+table.cover{font-size:.84rem}
+
+/* 범례 · 큰 그림 · 인출 연습 */
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 18px;margin:0 0 30px;padding:14px 16px;
+  border:1px solid var(--line);border-radius:8px;font-size:.84rem;line-height:1.7}
+.legend div{display:flex;gap:4px;align-items:baseline}
+.big{margin:0 0 8px;padding:16px 20px;background:#F5F7FA;border-radius:8px}
+.big>p{margin:0 0 8px}.big>:last-child{margin-bottom:0}
+.recall{margin:34px 0;padding:18px 22px 10px;border:1.5px solid var(--ink);border-radius:10px}
+.recall>h3{margin:0 0 12px}
+.recall>ol{margin:0;padding-left:1.3em}
+.recall li{margin:0 0 12px;break-inside:avoid}
+.recall details{margin-top:4px}
+.recall summary{cursor:pointer;color:var(--ink2);font-size:.9rem}
+
+/* 강의자료 쪽 이미지 (각 쪽 설명의 맨 앞) */
+figure.slide{margin:24px 0 12px;padding:8px 8px 6px;border:1px solid var(--line);border-radius:10px;background:#fff;break-inside:avoid}
+figure.slide img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:4px;cursor:zoom-in}
+figure.slide figcaption{margin:6px 2px 0;font-size:.8rem;color:var(--ink2)}
+figure.slide figcaption::before{content:"▤ "}
+figure.slide.zoom{position:fixed;inset:0;z-index:50;margin:0;padding:12px;border:0;border-radius:0;
+  background:rgba(15,20,30,.93);display:flex;flex-direction:column;align-items:center;justify-content:center}
+figure.slide.zoom img{width:auto;max-width:100%;max-height:calc(100% - 30px);border:0;cursor:zoom-out}
+figure.slide.zoom figcaption{color:#fff}
+
+/* 도구막대(화면 전용) */
+.bar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;padding:8px 16px;
+  padding-top:calc(8px + env(safe-area-inset-top,0px));
+  background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);font-size:.82rem}
+.nojs{padding:8px 16px;background:#FFF4D6;border-bottom:1px solid #E7C56A;color:#7A5200;font-size:.82rem}
+.bar .g{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.bar .g>span{color:var(--ink2);margin-right:2px}
+.bar button{font:inherit;padding:2px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bar button:focus-visible{outline:2px solid var(--same);outline-offset:2px}
+
+/* 보기 필터 */
+body.f-p1 section>:not(h2):not(h3):not(.p1):not(.p1d){display:none}
+body.f-q section>:not(h2):not(h3):not(.q){display:none}
+body.hide-ai .ai{display:none}
+body.exam details.ans,body.exam .recall details{display:none}
+
+@media (max-width:720px){main{padding:28px 18px 72px}.legend{grid-template-columns:1fr}}
+@page{size:A4;margin:14mm 13mm}
+@media print{
+  html{font-size:10.5pt}
+  p,li{orphans:3;widows:3}
+  body{background:#fff}
+  main{max-width:none;padding:0}
+  .bar,.nojs{display:none}
+  figure.slide.zoom{position:static;padding:8px;background:#fff;display:block}
+  figure.slide.zoom img{width:100%;max-height:none}
+  figure.slide.zoom figcaption{color:var(--ink2)}
+  h2,h3,.hd{break-after:avoid}
+  h2{margin-top:36pt}
+  tr{break-inside:avoid}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="bar" role="toolbar" aria-label="보기 설정">
+  <div class="g"><span>보기</span>
+    <button data-f="" aria-pressed="true">전체</button>
+    <button data-f="f-p1" aria-pressed="false">교수님 강조만</button>
+    <button data-f="f-q" aria-pressed="false">기출만</button>
+    <button id="aiT" aria-pressed="false">AI 추정 숨기기</button>
+  </div>
+  <div class="g"><span>정답</span>
+    <button id="ansO" aria-pressed="false">모두 펼치기</button>
+    <button id="ansC" aria-pressed="true">모두 접기</button>
+    <button id="exam" aria-pressed="false">시험지 모드 (정답 빼고 인쇄)</button>
+  </div>
+</div>
+<noscript><div class="nojs">이 뷰어는 스크립트를 실행하지 않아 위 버튼이 동작하지 않는다. 정답은 각 ▸ 표시를 눌러 펼칠 수 있고, 버튼을 쓰려면 Safari·Chrome 같은 브라우저로 열면 된다.</div></noscript>
+
+<main>
+<!--PART-->
+</main>
+
+<template id="legend">
+<div class="legend" aria-label="라벨 범례">
+  <div><span class="lb c-prof">[출제 언급]</span>교수님이 시험·중요성을 직접 말함 (인용 필수)</div>
+  <div><span class="lb c-detail">[자세히 설명]</span>교수님이 유독 길게·반복해서 설명</div>
+  <div><span class="lb c-same">[OOO 교수님 - 동일]</span>현재 담당 교수가 낸 기출</div>
+  <div><span class="lb c-diff">[OOO 교수님 - 비동일]</span>다른 교수가 낸 기출</div>
+  <div><span class="lb c-slide">[굵은 글씨]</span><span class="lb c-slide">[형광펜]</span><span class="lb c-slide">[필기]</span>강의자료 표기</div>
+  <div><span class="lb c-slide">[그림 해설]</span><span class="lb c-slide">[표 해설]</span>그림·표 읽는 법</div>
+  <div><span class="lb o c-ai">[예상 출제 포인트]</span><span class="lb o c-ai">[누락 출제 포인트]</span>AI 추정 (점선)</div>
+  <div><span class="lb c-must">[필수 이해]</span><span class="lb c-trap">[놓치기 쉬운 포인트]</span>이해 보조</div>
+  <div><span class="lb c-skip">[출제 제외 언급]</span>교수님이 안 낸다고 함</div>
+  <div><span class="lb c-flag">⚠ 확인 필요</span>AI가 확신 못 하는 부분 — 직접 검증</div>
+</div>
+</template>
+
+<script>
+(function(){
+  var B=document.body,fs=[].slice.call(document.querySelectorAll('[data-f]'));
+  fs.forEach(function(b){b.onclick=function(){
+    B.classList.remove('f-p1','f-q'); if(b.dataset.f)B.classList.add(b.dataset.f);
+    fs.forEach(function(x){x.setAttribute('aria-pressed',x===b)});};});
+  function tog(id,cls){var el=document.getElementById(id);el.onclick=function(){el.setAttribute('aria-pressed',B.classList.toggle(cls))};}
+  tog('aiT','hide-ai');tog('exam','exam');
+  /* 정답 펼치기·접기: 두 버튼이 현재 상태를 보여 준다(모두 열림 → 펼치기 검정, 모두 닫힘 → 접기 검정, 섞이면 둘 다 흰색) */
+  var O=document.getElementById('ansO'),C=document.getElementById('ansC');
+  function dets(){return [].slice.call(document.querySelectorAll('details'))}
+  function sync(){var ds=dets(),n=ds.filter(function(d){return d.open}).length;
+    O.setAttribute('aria-pressed',ds.length>0&&n===ds.length);C.setAttribute('aria-pressed',n===0)}
+  function ans(o){dets().forEach(function(d){d.open=o});sync()}
+  O.onclick=function(){ans(true)};C.onclick=function(){ans(false)};
+  document.addEventListener('toggle',sync,true);sync();
+  /* 슬라이드 이미지: 누르면 화면 가득 확대, 다시 누르면 원래대로 */
+  [].forEach.call(document.querySelectorAll('figure.slide'),function(f){f.onclick=function(){f.classList.toggle('zoom')}});
+  /* 인쇄·PDF 변환 시 정답 자동 펼침(시험지 모드 제외) */
+  function onPrint(){if(!B.classList.contains('exam'))ans(true)}
+  window.addEventListener('beforeprint',onPrint);
+  if(window.matchMedia){var mq=window.matchMedia('print'),h=function(e){if(e.matches)onPrint()};mq.addEventListener?mq.addEventListener('change',h):mq.addListener(h)}
+})();
+</script>
+</body>
+</html>
