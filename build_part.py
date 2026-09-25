@@ -1,4 +1,4 @@
-# build_part.py — 생화학 학습자료 빌드 도구 (지침 v1.2)
+# build_part.py — 생화학 학습자료 빌드 도구 (지침 v1.6)
 #
 #   빌드:   python3 build_part.py Part.html [Part2.html ...] [--pdf 강의자료.pdf --first 1] [--theme theme.html]
 #           · <!DOCTYPE 이 없는 파일(본문만 쓴 파일) → theme.html 로 감싼다 (제목은 첫 <h1>, <!--LEGEND--> 자리에 범례)
