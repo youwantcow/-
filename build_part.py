@@ -1,4 +1,4 @@
-# build_part.py — 생화학 학습자료 빌드 도구 (지침 v1.6)
+# build_part.py — 학습자료 빌드 도구 (지침 v1.8)
 #
 #   빌드:   python3 build_part.py Part.html [Part2.html ...] [--pdf 강의자료.pdf --first 1] [--theme theme.html]
 #           · <!DOCTYPE 이 없는 파일(본문만 쓴 파일) → theme.html 로 감싼다 (제목은 첫 <h1>, <!--LEGEND--> 자리에 범례)
@@ -6,6 +6,8 @@
 #             --first: PDF 파일 1쪽이 원본에서 몇 쪽인지 (범위를 잘라 올린 파일이면 그 시작 쪽번호, 예: p41-80.pdf → 41)
 #           · 파일마다 <이름>_core.md (1순위·동일 기출 전문·이해 보조·AI 추정·마무리 발췌)를 함께 만든다 (--no-core 로 생략)
 #   병합:   python3 build_part.py --merge 전체.html Part1.html Part2.html ...   (빌드된 파일들을 순서대로 하나로)
+#           · Part마다 id와 그 id를 가리키는 #링크에 p<Part번호>- 접두어를 붙여 병합 후 링크가 다른 Part로 튀지 않게 한다
+#           · 끝에 「중복 id · 끊긴 링크 · 이미지 n/n」 검사 결과를 출력한다
 #
 # theme.html 은 --theme 로 지정하거나, 이 스크립트와 같은 폴더에 둔다.
 import argparse, base64, os, re, subprocess, sys, tempfile
@@ -159,16 +161,29 @@ def inner_main(html):
     m = re.search(r"<main>(.*?)</main>", html, re.S)
     return m.group(1).strip() if m else html
 
+def prefix_ids(body, pre):  # Part 안의 id와 그 id를 가리키는 #링크에 접두어(p3-)를 붙인다 — 병합 후 id 충돌 방지
+    ids = set(re.findall(r'\sid="([^"]+)"', body))
+    body = re.sub(r'(\sid=")([^"]+)"', lambda m: m.group(1) + pre + m.group(2) + '"', body)
+    body = re.sub(r'(href="#)([^"]+)"', lambda m: m.group(1) + (pre + m.group(2) if m.group(2) in ids else m.group(2)) + '"', body)
+    return body
+
 if a.merge:
     t, legend = theme_parts(); bodies = []
     for i, f in enumerate(a.files):
         b = inner_main(read(f))
         if i: b = b.replace(legend, "")  # 범례는 첫 Part 것만
+        pm = re.search(r"Part\s*(\d+[a-z]?)", re.search(r"<h1[^>]*>(.*?)</h1>", b, re.S).group(1)) if re.search(r"<h1", b) else None
+        b = prefix_ids(b, f"p{pm.group(1) if pm else i + 1}-")
         bodies.append(b)
     h1 = re.search(r"<h1[^>]*>(.*?)</h1>", bodies[0], re.S)
     title = (re.sub(r"<[^>]+>", "", h1.group(1)).strip() if h1 else "학습자료") + " (전체)"
     write(a.merge, t.replace("<!--TITLE-->", title, 1).replace("<!--PART-->", "\n\n<hr>\n\n".join(bodies), 1))
+    out = read(a.merge); body = inner_main(out)
+    ids = re.findall(r'\sid="([^"]+)"', body); dup = sorted({x for x in ids if ids.count(x) > 1})
+    broken = sorted({h for h in re.findall(r'href="#([^"]+)"', body) if h not in set(ids)})
+    imgs = len(re.findall(r"<img[^>]*data-page", body)); filled = len([m for m in re.findall(r"<img[^>]*>", body) if "data-page" in m and 'src="data:image' in m])
     print(f"병합 완료: {len(a.files)}개 → {a.merge} ({os.path.getsize(a.merge)/1e6:.1f} MB)")
+    print(f"  검사: 중복 id {len(dup)}{' ' + str(dup[:10]) if dup else ''} · 끊긴 링크 {len(broken)}{' ' + str(broken[:10]) if broken else ''} · 이미지 {filled}/{imgs}")
     sys.exit(0)
 
 for f in a.files:
