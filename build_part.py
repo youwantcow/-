@@ -1,4 +1,6 @@
-# build_part.py — 학습자료 빌드 도구 (지침 v2.5)
+# build_part.py — 학습자료 빌드 도구 (지침 v2.7)
+#   v2.7: 기억 장치(theme v3.2) — core에 「## 먼저 풀어 보기」(div.recall.pre) · 「## 빈칸 인출 · 방향 사슬」(div.drill — 빈칸은 〔빈칸: 답〕, ol.chain 은 A → B → C)를 넣는다
+#         (Part 마무리 절에서 같은 것을 두 번 싣지 않는다). 병합: 제목에 「강의 틀」이 있는 파일은 t- 접두어(Part 번호와 겹치지 않게). 빌드 · 이미지 · 카드 결과는 v2.5와 같다
 #   v2.1: 요약·핵심 개념 노트(note_kit.py)의 core 추출(「요약 노트」·「핵심 개념」) · 노트를 맨 앞에 두고 병합해도 제목은 Part에서
 #   v2.2: 노트 core에 「노트 퀴즈」(발문 · 답 · 개념 — 복습의 `퀴즈`가 겹치지 않게) 추가. Part의 빌드·core·병합 결과는 v2.1과 같다
 #   v2.5: 학습자료 + 카드·퀴즈 한 파일(theme v3.0) —
@@ -154,6 +156,9 @@ def md(el):  # 요소 → 마크다운 비슷한 텍스트
         cap = el.find("figcaption"); return "\n〔기출 그림: " + (text(cap) if cap else "") + "〕\n"
     if n in ("figure", "img", "script", "style", "template") or "cover" in cls: return ""
     if n == "br": return "\n"
+    if n == "span" and "bk" in cls: return "〔빈칸: " + text(el) + "〕"
+    if n == "ol" and "chain" in cls:
+        return "\n" + " → ".join(re.sub(r"\s+", " ", "".join(md(c) for c in li.children)).strip() for li in el.find_all("li", recursive=False)) + "\n"
     if n in ("h2", "h3", "h4"): return "\n" + "#" * int(n[1]) + " " + text(el) + "\n"
     if n == "p" and "hd" in cls: return "\n**" + text(el) + "**\n"
     if n == "div" and "qh" in cls: return "\n**" + text(el) + "**\n"
@@ -165,7 +170,7 @@ def md(el):  # 요소 → 마크다운 비슷한 텍스트
             out += (f"{i}. " if n == "ol" else "- ") + body.replace("\n", "\n   ") + "\n"
         return out
     if n == "table":
-        rows = [[text(c) for c in tr.find_all(["th", "td"])] for tr in el.find_all("tr")]
+        rows = [[re.sub(r"\s+", " ", "".join(md(x) for x in c.children)).strip() for c in tr.find_all(["th", "td"])] for tr in el.find_all("tr")]
         if not rows: return ""
         w = max(len(r) for r in rows); rows = [r + [""] * (w - len(r)) for r in rows]
         head = "| " + " | ".join(rows[0]) + " |"; sep = "|" + "---|" * w
@@ -224,6 +229,8 @@ def core(html):
         ("[출제 제외 언급]", lambda e: e.name == "div" and {"box", "skip"} <= set(e.get("class", []))),
         ("[표 해설]", lambda e: e.name == "div" and {"box", "tbl"} <= set(e.get("class", []))),
         ("⚠ 확인 필요 (본문 자리의 플래그)", lambda e: e.name == "div" and {"box", "flag"} <= set(e.get("class", []))),
+        ("먼저 풀어 보기 (Part 첫머리 — 답은 본문 자리에)", lambda e: e.name == "div" and {"recall", "pre"} <= set(e.get("class", []))),
+        ("빈칸 인출 · 방향 사슬 (〔빈칸: 답〕 — 복습의 `약점 복습` · `퀴즈`가 이 칸을 그대로 묻는다)", lambda e: e.name == "div" and "drill" in e.get("class", [])),
     ]
     for title, pred in groups:
         els = [e for e in main.find_all("div") if pred(e) and not any(p in taken for p in e.parents)]
@@ -247,7 +254,7 @@ def core(html):
     if end:
         out.append("\n## Part 마무리 (인출 연습 · 혼동 쌍 · 암기 주문 후보)")
         for child in end.children:
-            if getattr(child, "name", None) == "h2": continue
+            if getattr(child, "name", None) == "h2" or any(child is x for x in taken): continue
             if getattr(child, "name", None) in ("h3", "h4") and "커버리지" in text(child): break  # 구판(v1.8) 파일의 커버리지 보고는 뺀다
             s = md(child).strip()
             if s: out.append(s + "\n")
@@ -287,7 +294,7 @@ if a.merge:
         h1t = re.search(r"<h1[^>]*>(.*?)</h1>", b, re.S).group(1) if re.search(r"<h1", b) else ""
         pm = re.search(r"Part\s*(\d+[a-z]?)", h1t)
         # 요약·핵심 개념 노트(note_kit.py)는 n- 접두어 — 어느 자리에 넣어도 Part의 접두어와 겹치지 않는다
-        raw.append((b, f"p{pm.group(1)}-" if pm else "n-" if "노트" in h1t else f"p{i + 1}-"))
+        raw.append((b, f"p{pm.group(1)}-" if pm else "n-" if "노트" in h1t else "t-" if "강의 틀" in h1t else f"p{i + 1}-"))
     parts = [(pre, set(re.findall(r'\sid="([^"]+)"', b))) for b, pre in raw]  # 1차: Part별 id 수집
     xref = {"n": 0, "모호": []}
     bodies = [prefix_ids(b, pre, parts, i, xref) for i, (b, pre) in enumerate(raw)]  # 2차: 접두어 적용

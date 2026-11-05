@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ctx_edit.py — 과목 컨텍스트(03) 파일을 표 단위로 안전하게 고치는 도구 (지침 v1.9 · v1.1)
+"""ctx_edit.py — 과목 컨텍스트(03) 파일을 표 단위로 안전하게 고치는 도구 (제작 지침 v2.7 · 복습 지침 v2.0 · v1.2)
 
 파일 전체를 다시 쓰지 않는다. 지정한 절의 표에서 지정한 행만 바꾸거나 더하고, 나머지 줄은 글자 그대로 둔다.
 쓰기 명령은 끝에 「최종 수정:」 날짜를 오늘로 바꾸고, 무엇이 바뀌었는지 한 줄로 보고한다.
@@ -20,6 +20,11 @@
   profile  파일 --prof 김OO [--field 항목 --value 값]... [--line 문장]... [--tag "강의명 · 날짜"]
            §3 교수별 출제 프로필. 블록이 없으면 OOO 틀을 복사해 만든다. --field 는 빈 항목이면 채우고 있으면 뒤에 잇는다. --line 은 블록 끝에 「- [tag] 문장」
   weak     파일 --date .. --lecture .. --wrong .. --confused .. [--recheck ..]   §5 약점 로그 행 추가
+  weak-find 파일 --q 낱말 [--q 낱말 ...]            §5 낱말이 모두 들어 있는 행(틀린 내용 · 헷갈린 것) — 재발인지 볼 때
+  weak-due 파일 [--today D] [--exam D] [--all]      §5 인출 차례: 오늘 꺼낼 행 · 대기 · 완료 (시험 2일 전부터는 미완료 전부)
+  weak-check 파일 --mark 3=○ [--mark 5=✕ ...] [--date D] [--reset 7]
+           §5 재확인 칸에 「MM-DD ○/✕」를 덧붙인다(번호는 weak-due · show --section 5 의 #). 하루 이상 간격으로 ○가 두 번 이어지면 「완료」
+           --reset n: 그 행의 기록을 지우고 처음부터(사후분석 — 로그에 있었는데 시험에서 또 틀린 행)
   touch    파일                                     최종 수정일만 오늘로
 
 공통: --out 다른파일  (기본은 제자리 저장) · --date-today YYYY-MM-DD (최종 수정일에 쓸 날짜, 기본 오늘)
@@ -444,6 +449,150 @@ def cmd_weak(doc, a):
     finish(doc, a, "§5 약점 로그 추가 1행")
 
 
+# ---------- §5 약점 로그 — 인출 기록 · 일정 (v1.2 · 복습 지침 v2.0) ----------
+#   재확인 칸: 「미」로 시작 → 꺼낼 때마다 「 · MM-DD ○」 / 「 · MM-DD ✕」를 덧붙인다 → 하루 이상 간격 ○ 두 번 연속이면 「 · 완료」
+#   일정: 끝의 연속 ○ 수가 0(새 행 · 직전 ✕)이면 마지막 기록(없으면 행 날짜) + 1일, 1이면 + 3일. 시험 2일 전부터는 미완료 전부
+REC = re.compile(r"(?:(\d{4})-)?(\d{1,2})[-/.](\d{1,2})\s*([○✕OXox])")
+STEP = {0: 1, 1: 3}
+
+
+def weak_cols(t):
+    return {"date": t.col("날짜", required=False), "lec": t.col("강의", required=False), "wrong": t.col("틀린", required=False),
+            "conf": t.col("헷갈", required=False), "re": t.col("재확인", required=False)}
+
+
+def weak_rows(t):
+    """채워진 행 → [(번호, 줄, cs)] — 번호는 표 순서로 1부터"""
+    out, n = [], 0
+    for i in t.rows:
+        cs = t.get(i)
+        if is_blank(cs): continue
+        n += 1; out.append((n, i, cs))
+    return out
+
+
+def ymd(s, year):
+    m = re.search(r"(\d{4})-(\d{1,2})-(\d{1,2})", s or "")
+    if m: return datetime.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+    m = re.search(r"(\d{1,2})[-/.](\d{1,2})", s or "")
+    if m:
+        try: return datetime.date(year, int(m.group(1)), int(m.group(2)))
+        except ValueError: return None
+    return None
+
+
+def records(cell, base):
+    """재확인 칸 → [(날짜, ○이면 True)]. 연도가 없는 기록은 앞 기록(처음엔 행 날짜)의 연도로, 반년 넘게 거슬러 가면 다음 해로 본다"""
+    out, prev = [], base
+    for m in REC.finditer(cell or ""):
+        y = int(m.group(1)) if m.group(1) else prev.year
+        try: d = datetime.date(y, int(m.group(2)), int(m.group(3)))
+        except ValueError: continue
+        if not m.group(1) and d < prev - datetime.timedelta(days=180): d = d.replace(year=y + 1)
+        out.append((d, m.group(4) in "○Oo")); prev = d
+    return out
+
+
+def weak_state(cs, c, today):
+    """→ (상태 「완료」·「오늘」·「대기」, 다음 날짜 또는 None, 기록, 끝의 연속 ○ 수)"""
+    base = ymd(cs[c["date"]] if c["date"] is not None else "", today.year) or today
+    cell = cs[c["re"]] if c["re"] is not None else ""
+    rec = records(cell, base)
+    streak = 0
+    for d, ok in reversed(rec):
+        if not ok: break
+        streak += 1
+    if "완료" in cell: return "완료", None, rec, streak
+    restart = re.search(r"재시작\s*(\S+)", cell)
+    last = rec[-1][0] if rec else (ymd(restart.group(1), today.year) if restart else None) or base
+    nxt = last + datetime.timedelta(days=STEP.get(streak, 1))
+    return ("오늘" if nxt <= today else "대기"), nxt, rec, streak
+
+
+def next_exam(doc, today):
+    """§1 「시험 일정」의 「n차: 10월 23일」 → 오늘 이후 가장 가까운 (이름, 날짜)"""
+    s, e = doc.section("1"); best = None
+    for l in doc.lines[s:e]:
+        for m in re.finditer(r"(\S*차|기말|중간)\s*[:：]\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일", l):
+            for y in (today.year, today.year + 1):
+                try: d = datetime.date(y, int(m.group(2)), int(m.group(3)))
+                except ValueError: continue
+                if d >= today and (best is None or d < best[1]): best = (m.group(1), d)
+    return best
+
+
+def short(s, n=70):
+    s = re.sub(r"\s+", " ", s or "").strip()
+    return s if len(s) <= n else s[:n - 1] + "…"
+
+
+def rec_str(rec):
+    return " ".join(("○" if ok else "✕") for _, ok in rec) or "없음"
+
+
+def cmd_weak_find(doc, a):
+    t = doc.table("5"); c = weak_cols(t); qs = [q.lower() for q in a.q]
+    hits = []
+    for n, i, cs in weak_rows(t):
+        hay = " ".join(cs[k] for k in (c["wrong"], c["conf"]) if k is not None).lower()
+        if all(q in hay for q in qs): hits.append((n, cs))
+    for n, cs in hits:
+        print(f"#{n} · {cs[c['lec']] if c['lec'] is not None else ''} · {cs[c['date']] if c['date'] is not None else ''} · 재확인 {short(cs[c['re']] if c['re'] is not None else '', 30)} · {short(cs[c['wrong']], 80)}")
+    print(f"§5 「{' · '.join(a.q)}」 — {len(hits)}행" + (f" → 새로 넣으면 재발 {len(hits) + 1}회째" if hits else " → 처음"))
+
+
+def cmd_weak_due(doc, a):
+    t = doc.table("5"); c = weak_cols(t)
+    today = ymd(a.today, datetime.date.today().year) if a.today else datetime.date.today()
+    ex = (("시험", ymd(a.exam, today.year)) if a.exam else next_exam(doc, today))
+    cram = bool(ex and ex[1] and (ex[1] - today).days <= 2)
+    rows = []
+    for n, i, cs in weak_rows(t):
+        st, nxt, rec, streak = weak_state(cs, c, today)
+        if cram and st == "대기": st = "오늘"
+        rows.append((n, st, nxt, rec, cs))
+    cnt = {k: sum(1 for r in rows if r[1] == k) for k in ("오늘", "대기", "완료")}
+    head = f"약점 복습 — {today.isoformat()} 기준"
+    if ex and ex[1]: head += f" · 다음 시험 {ex[0]} {ex[1].strftime('%m-%d')}(D-{(ex[1] - today).days})" + (" · 시험 2일 전 → 미완료 전부" if cram else "")
+    print(head)
+    print(f"오늘 차례 {cnt['오늘']} · 대기 {cnt['대기']} · 완료 {cnt['완료']} (전체 {len(rows)})")
+    for n, st, nxt, rec, cs in rows:
+        if st != "오늘" and not a.all: continue
+        when = "" if st == "완료" else (" · 예정 " + nxt.strftime("%m-%d") if nxt else "")
+        lec = cs[c["lec"]] if c["lec"] is not None else ""
+        print(f"#{n} [{st}] {lec} · 기록 {rec_str(rec)}{when} · {short(cs[c['wrong']] if c['wrong'] is not None else '')}")
+
+
+def cmd_weak_check(doc, a):
+    t = doc.table("5"); c = weak_cols(t)
+    if c["re"] is None: sys.exit("§5 표에 「재확인」 열이 없다")
+    today = ymd(a.date, datetime.date.today().year) if a.date else datetime.date.today()
+    rows = {n: (i, cs) for n, i, cs in weak_rows(t)}
+    done = []
+    for n in a.reset or []:
+        if n not in rows: sys.exit(f"#{n} 행이 없다 (weak-due --all 로 번호 확인)")
+        i, cs = rows[n]; cs[c["re"]] = f"미 (재시작 {today.strftime('%m-%d')})"; t.set(i, cs); done.append(f"#{n} 재시작")
+    for m in a.mark or []:
+        mm = re.match(r"^\s*#?(\d+)\s*=\s*([○✕OXox])\s*$", m)
+        if not mm: sys.exit(f"--mark 형식은 「번호=○」 또는 「번호=✕」: {m}")
+        n, ok = int(mm.group(1)), mm.group(2) in "○Oo"
+        if n not in rows: sys.exit(f"#{n} 행이 없다 (weak-due --all 로 번호 확인)")
+        i, cs = rows[n]
+        cell = cs[c["re"]].strip()
+        if "완료" in cell:
+            done.append(f"#{n} 이미 완료 — 그대로"); continue
+        tok = f"{today.strftime('%m-%d')} {'○' if ok else '✕'}"
+        cell = tok if (not cell or cell == "미") else f"{cell} · {tok}"
+        base = ymd(cs[c["date"]] if c["date"] is not None else "", today.year) or today
+        rec = records(cell, base)
+        fin = len(rec) >= 2 and rec[-1][1] and rec[-2][1] and (rec[-1][0] - rec[-2][0]).days >= 1
+        if fin: cell += " · 완료"
+        cs[c["re"]] = cell; t.set(i, cs); rows[n] = (i, cs)
+        done.append(f"#{n} {'○' if ok else '✕'}" + (" → 완료" if fin else ""))
+    if not done: sys.exit("바꿀 것이 없다 (--mark 또는 --reset)")
+    finish(doc, a, "§5 재확인 " + " · ".join(done))
+
+
 # ---------- show · check ----------
 def cmd_show(doc, a):
     keys = [a.section] if a.section else ["2", "2-1", "2-2", "4", "5"]
@@ -455,10 +604,14 @@ def cmd_show(doc, a):
             continue
         t = doc.table(k)
         print(f"[§{k}] 열: " + " | ".join(t.h))
+        n = 0
         for i in t.rows:
             cs = t.get(i)
-            if is_blank(cs) and not a.all: continue
-            print("  " + " | ".join(cs))
+            if is_blank(cs):
+                if a.all: print("  " + " | ".join(cs))
+                continue
+            n += 1
+            print(("  #%d " % n if k == "5" else "  ") + " | ".join(cs))
         print()
     if not a.section:
         s, e, blocks = prof_blocks(doc)
@@ -489,6 +642,10 @@ def cmd_check(doc, a):
 
 
 def main():
+    try:
+        import signal; signal.signal(signal.SIGPIPE, signal.SIG_DFL)  # `| head` 로 잘라 볼 때 오류 없이
+    except (ImportError, AttributeError, ValueError):
+        pass
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest="cmd", required=True)
 
@@ -509,6 +666,9 @@ def main():
     p = common(sp.add_parser("glossary-log")); p.add_argument("log"); p.add_argument("--force", action="store_true")
     p = common(sp.add_parser("profile")); p.add_argument("--prof", required=True); p.add_argument("--field", action="append"); p.add_argument("--value", action="append"); p.add_argument("--line", action="append"); p.add_argument("--tag")
     p = common(sp.add_parser("weak")); p.add_argument("--date"); p.add_argument("--lecture"); p.add_argument("--wrong"); p.add_argument("--confused"); p.add_argument("--recheck")
+    p = common(sp.add_parser("weak-find")); p.add_argument("--q", action="append", required=True)
+    p = common(sp.add_parser("weak-due")); p.add_argument("--today"); p.add_argument("--exam"); p.add_argument("--all", action="store_true")
+    p = common(sp.add_parser("weak-check")); p.add_argument("--mark", action="append"); p.add_argument("--date"); p.add_argument("--reset", action="append", type=int)
     common(sp.add_parser("touch"))
     a = ap.parse_args()
     if a.cmd == "profile" and len(a.field or []) != len(a.value or []):
@@ -517,7 +677,8 @@ def main():
     {"show": cmd_show, "check": cmd_check, "prof": cmd_prof, "prof-bulk": cmd_prof_bulk, "alias": cmd_alias,
      "history": cmd_history, "history-bulk": cmd_history_bulk, "glossary": cmd_glossary, "glossary-bulk": cmd_glossary_bulk,
      "glossary-log": cmd_glossary_log,
-     "profile": cmd_profile, "weak": cmd_weak, "touch": lambda d, a: finish(d, a, "날짜만 갱신")}[a.cmd](doc, a)
+     "profile": cmd_profile, "weak": cmd_weak, "weak-find": cmd_weak_find, "weak-due": cmd_weak_due, "weak-check": cmd_weak_check,
+     "touch": lambda d, a: finish(d, a, "날짜만 갱신")}[a.cmd](doc, a)
 
 
 if __name__ == "__main__":
