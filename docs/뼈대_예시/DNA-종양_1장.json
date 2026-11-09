@@ -1,0 +1,553 @@
+{
+ "meta": {
+  "subject": "생화학",
+  "lecture": "DNA · 유전체 의학과 종양 생화학 — 1장 DNA(구조 · 복제 · 복구)",
+  "prof": "박석인",
+  "week": "1주차(09-04)",
+  "pages": "p.1–55",
+  "date": "2026-11-10",
+  "guide": "v2.8",
+  "shape": "기둥",
+  "shape_reason": "복구 구간 p.38–51이 손상 종류별 경로를 나란히 세우고 p.43이 BER vs NER를 한 쪽에 대비, p.55 Table 13.4가 경로↔질환 — 그 위 구조 · 복제(p.3–35)는 가로 흐름 두 줄",
+  "note": "학습자료 Part 1–7을 재료로, 새 사실 없음 · 2장(종양)과 한 강의"
+ },
+ "legend": [
+  {
+   "cls": "c-pt",
+   "label": "A 구조(Part 1–2)"
+  },
+  {
+   "cls": "c-tl",
+   "label": "B 복제(Part 3–4)"
+  },
+  {
+   "cls": "c-tx",
+   "label": "C 복구 5기둥(Part 5–6)"
+  },
+  {
+   "cls": "c-am",
+   "label": "재조합 · 전좌(Part 7)"
+  }
+ ],
+ "one": "<i class=\"tg s\">자료</i>교수님 설명(두 번째 시간 첫 발언, p.55) — 유전자의 합성 · 복구 · 재조합에 의해서 일어나는 병 중에 가장 대표적인 병이 암이다. 1장은 그 앞부분: DNA가 어떻게 생겼고(A) · 어떻게 베끼고(B) · 망가지면 어떻게 고치는가(C). 복구 다섯 경로는 「무슨 손상을 → 누가 알아보고 → 어떻게 떼고 채우나 → 고장 나면 무슨 병」으로 나란히 세운다. 그중 교수님이 강의 전체의 귀결점으로 꼽은 것은 C-4 mismatch repair(MutS · MutL · MutH → MSH · MLH)다. <span class=\"ref\">P1 · 0절 · P6 · 2절</span>",
+ "grid": {
+  "cols": [
+   "l2",
+   "l1",
+   "sl",
+   "sr",
+   "r1",
+   "r2"
+  ],
+  "widths": [
+   330,
+   330,
+   235,
+   235,
+   330,
+   330
+  ]
+ },
+ "pills": [],
+ "dividers": [
+  {
+   "row": 1,
+   "text": "A. DNA의 구조 — 유전체에서 뉴클레오타이드까지 · Part 1–2 · p.3–20 · 분자생물학과 겹치지만 출제 대상(교수님 p.9)"
+  },
+  {
+   "row": 4,
+   "text": "B. 복제 — 5′→3′ 한 방향으로 두 가닥을 동시에 · Part 3–4 · p.21–35"
+  },
+  {
+   "row": 7,
+   "text": "C. 복구 — 손상의 종류가 경로를 정한다 · Part 5–6 · p.36–51 · 교수님 「복구되는 방식은 임상적인 내용이랑 연결되니까. 꼭 한번 기억하셔야지 되고.」"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "nA",
+   "num": "A",
+   "name": "DNA의 구조 — 크기를 줄여 가며 보기",
+   "cls": "c-pt",
+   "cat": "Part 1–2 · p.3–20",
+   "loc": "핵",
+   "col": "l2",
+   "row": 2,
+   "span": 6,
+   "why": "<i class=\"tg q\">교수님</i><q>분자 생물에서 제가 말 안 하고 대충 넘어갔다고 그게 이 내용에서 중요하지 않은 건 아닙니다. 시험에 안 나온 것도 아니겠죠. 다 알고 있어야 되는 거니까.</q> <span class=\"ref\">p.9</span>",
+   "why2": "<i class=\"tg s\">자료</i>30억 글자를 핵에 접어 넣는 포장(염색체 · 뉴클레오솜) → 두 가닥이 붙는 힘(수소결합 · 역평행) → 글자 하나의 구조(염기 · 당 · 인산). 뒤의 복제 · 복구는 전부 이 구조의 규칙(5′→3′ · 상보성 · 2′-OH 없음)을 쓴다. 동일 교수 기출이 A-5에 12문항 몰려 있다."
+  },
+  {
+   "id": "nB",
+   "num": "B",
+   "name": "DNA 복제 — 원핵에서 배운 틀을 진핵으로",
+   "cls": "c-tl",
+   "cat": "Part 3–4 · p.21–35",
+   "loc": "핵",
+   "col": "l2",
+   "row": 5,
+   "span": 6,
+   "why": "<i class=\"tg q\">교수님</i><q>이제 DNA polymerase. 얘가 제일 중요한 애는 사실 여기서 DNA를 갖다가 붙이는 애인데, 여기다가 제일 중요한 애인데 그림은 안 그렸어요.</q> <span class=\"ref\">p.24</span>",
+   "why2": "<i class=\"tg s\">자료</i>재료는 dNTP, 붙는 자리는 3′-OH뿐 → 합성은 항상 5′→3′ → 역평행 두 가닥 중 하나는 토막(Okazaki)으로 → primer를 떼고(gap) 채우고(polymerase) 잇는다(ligase). 복구의 마지막 두 단계가 이 효소들 그대로다(→ C). 임상 둘: topoisomerase(치료 표적) · PCNA(진단 표지)."
+  },
+  {
+   "id": "nC1",
+   "num": "C-1",
+   "name": "Direct reversal",
+   "cls": "c-tx",
+   "cat": "되돌리기 — 잘라내지 않는 예외",
+   "loc": "p.38–40",
+   "col": "l2",
+   "row": 8,
+   "why": "<i class=\"tg q\">교수님</i><q>임상적으로 이게 크게 중요하지는 않습니다.</q> — 필기 「몇 안 되는 특이한 예시」 <span class=\"ref\">p.38</span>",
+   "why2": "<i class=\"tg s\">자료</i>손상을 만든 결합만 거꾸로 끊는다 — 절제도 합성도 없는 유일한 경로라서 「예외」로 시험에 나온다."
+  },
+  {
+   "id": "nC2",
+   "num": "C-2",
+   "name": "Base excision repair (BER)",
+   "cls": "c-tx",
+   "cat": "염기 하나를 뽑는다",
+   "loc": "p.41–43",
+   "col": "l1",
+   "row": 8,
+   "why": "<i class=\"tg s\">자료</i>나선을 크게 비틀지 않는 염기 하나의 화학적 손상(U · 알킬화 · 산화) — 먼저 염기만 뽑고(glycosylase) 골격은 나중에 끊는다. p.41 「떼어내고 새로 만들기」 공통 틀의 첫 갈래."
+  },
+  {
+   "id": "nC3",
+   "num": "C-3",
+   "name": "Nucleotide excision repair (NER) · TC-NER",
+   "cls": "c-tx",
+   "cat": "뉴클레오타이드 여러 개를 가닥째 떼어낸다",
+   "loc": "p.43–45",
+   "col": "sl",
+   "row": 8,
+   "span": 2,
+   "why": "<i class=\"tg s\">자료</i>부피가 커 나선을 비트는 손상(thymine dimer · 부가물) — 사람은 UV 손상을 이 길로만 고친다(photoreactivation 없음). 고장 = xeroderma pigmentosum, 단백 이름 XPA · B · C…가 그 병에서 왔다.",
+   "why2": "<i class=\"tg q\">교수님</i><q>의대생들한테 그렇게 복잡한 분자생물학적인 개념들 다 말씀드리지는 않아도 되고.</q> — 「자세히 안 한다」지 「안 낸다」가 아니다(p.9) <span class=\"ref\">p.44</span>"
+  },
+  {
+   "id": "nC4",
+   "num": "C-4",
+   "name": "Mismatch repair (MMR)",
+   "cls": "c-tx",
+   "cat": "손상이 아니라 「틀린 짝」 — 어느 가닥이 새 가닥인가",
+   "loc": "p.46–48",
+   "col": "r1",
+   "row": 8,
+   "why": "<i class=\"tg q\">교수님</i><q>MutL, MutH. 오늘 강의에서 제일 중요한 게 3개만〔?원문: 3명만〕 뽑으라고, 임상적으로도 너무너무 중요하고, 오늘 제가 2시간 동안 설명하는 모든 설명이 귀결점이 다 얘로 가 있습니다〔?원문: 예로가 있습니다〕.</q> <span class=\"ref\">p.47 · 필기 ★★★</span>",
+   "why2": "<i class=\"tg s\">자료</i>복제 교정을 빠져나간 한 글자 오류 = point mutation의 씨앗. 고장 나면 변이가 쌓여 암(유전성 대장암) → 2장."
+  },
+  {
+   "id": "nC5",
+   "num": "C-5",
+   "name": "Double strand break (DSB)",
+   "cls": "c-tx",
+   "cat": "두 가닥 다 끊김 — 그냥 붙이거나(NHEJ) 짝을 베끼거나(HR)",
+   "loc": "p.49–51",
+   "col": "r2",
+   "row": 8,
+   "why": "<i class=\"tg q\">교수님</i><q>이렇게 갖다 이름을 붙인 이유는 이게 덜 흔한 방식이기 때문에 그렇습니다.</q> — NHEJ라는 부정형 이름 <span class=\"ref\">p.49 · 필기 ★★</span>",
+   "why2": "<i class=\"tg s\">자료</i>원인은 ionizing radiation. 제자리에 못 붙이면 translocation → BCR-ABL · CML(아래 · 2장). BRCA는 HR 쪽 유전자 → 2장 합성치사."
+  }
+ ],
+ "branches": [
+  {
+   "id": "bA1",
+   "p": "nA",
+   "cls": "c-pt",
+   "col": "l2",
+   "row": 3,
+   "title": "A-1 유전체의 숫자 — 30억 · 22,000 · 1.2%",
+   "ref": "P1 · 2절 · p.3–5",
+   "keys": [
+    "<b class=\"k\">30억</b> 염기 · <b class=\"k\">~22,000</b> protein-coding 유전자 · 암호화 서열 <b class=\"k\">1.2%</b>(exome <b class=\"k\">1.5%</b>는 다른 숫자)",
+    "유전자 수보다 많은 표현형: <b class=\"k\">alternative splicing</b> · <b class=\"k\">genetic rearrangement</b>(B세포 항체) <span class=\"ex\">22-1-주박1</span><span class=\"ex\">23-1-주박1</span>",
+    "형질은 대부분 <b class=\"k\">polygenic</b> — 예외가 CML의 BCR-ABL(한 유전자 · 한 병)"
+   ]
+  },
+  {
+   "id": "bA2",
+   "p": "nA",
+   "cls": "c-pt",
+   "col": "l1",
+   "row": 3,
+   "title": "A-2 염색체와 핵형 — 접어 넣기 · 눈으로 보기",
+   "ref": "P1 · 3절 · p.6–7",
+   "keys": [
+    "DNA → histone에 감김 → 응축 → <b class=\"k\">chromosome</b>",
+    "<b class=\"k\">karyotyping</b>: 길이대로 늘어놓음 — 수 · 전좌 · 큰 결실은 보이고 <b class=\"k\">point mutation</b>은 안 보임(→ sequencing)",
+    "CML의 Philadelphia chromosome이 핵형으로 보이는 대표 예 → C-5 · 2장 O-3"
+   ]
+  },
+  {
+   "id": "bA3",
+   "p": "nA",
+   "cls": "c-pt",
+   "col": "sl",
+   "span": 2,
+   "row": 3,
+   "title": "A-3 뉴클레오솜 · 염색질",
+   "ref": "P1 · 4절 · p.8–10",
+   "keys": [
+    "core = <b class=\"k\">H2A · H2B · H3 · H4</b> × 2 = 8량체 · <b class=\"k\">H1</b>은 core 밖(linker) · 지름 <b class=\"k\">11 nm</b> · 반복 <b class=\"k\">200 bp</b>",
+    "histone <b class=\"k\">(+)</b> ↔ 인산 backbone <b class=\"k\">(−)</b>",
+    "nuclease는 <b class=\"k\">linker</b>를 먼저 자름 → 200 bp 배수 <b class=\"k\">DNA ladder</b> <span class=\"ex\">25-1-01</span>"
+   ]
+  },
+  {
+   "id": "bA4",
+   "p": "nA",
+   "cls": "c-pt",
+   "col": "r1",
+   "row": 3,
+   "title": "A-4 이중나선 — 두 가닥이 붙는 규칙",
+   "ref": "P1 · 5절 · p.11–13",
+   "keys": [
+    "염기쌍은 <b class=\"k\">수소결합</b>(공유 ✕) · A–T <b class=\"k\">2</b> · G–C <b class=\"k\">3</b> · 가닥은 <b class=\"k\">역평행</b>",
+    "<b class=\"k\">major groove</b>: 넓어서 전사인자가 붙는 자리(필기)",
+    "골격은 <b class=\"k\">phosphodiester</b>(3′-OH ↔ 5′-인산) → 사슬에 <b class=\"k\">5′→3′</b> 방향 · 오른손 나선"
+   ]
+  },
+  {
+   "id": "bA5",
+   "p": "nA",
+   "cls": "c-pt",
+   "col": "r2",
+   "row": 3,
+   "title": "A-5 염기 · 뉴클레오사이드 · 뉴클레오타이드",
+   "ref": "P2 · 1–3절 · p.14–20",
+   "keys": [
+    "<b class=\"k\">purine</b> A · G(두 고리) / <b class=\"k\">pyrimidine</b> C · T(한 고리) — 구조식을 알아볼 만큼(약이 닮았다, 교수님)",
+    "염기 + 당 = <b class=\"k\">nucleoside</b>(cytosine → <b class=\"k\">cytidine</b>) · + 인산 = nucleotide · DNA 재료는 <b class=\"k\">dNTP</b>",
+    "denature ↔ <b class=\"k\">hybridization</b>(= annealing) · <b class=\"k\">2′-OH</b>가 있는 RNA만 알칼리에 분해 <span class=\"ex\">22·23-1-주박2–6</span><span class=\"ex\">25-1-02</span><span class=\"ex\">25-1-03</span>"
+   ]
+  },
+  {
+   "id": "bB1",
+   "p": "nB",
+   "cls": "c-tl",
+   "col": "l2",
+   "row": 6,
+   "title": "B-1 fork의 단백질 — 풀고 · 벌리고 · 붙잡고",
+   "ref": "P3 · 2절 · p.23–24",
+   "keys": [
+    "<b class=\"k\">topoisomerase</b>: fork 앞 꼬임 풀기(backbone 살짝 잘라 돌려 붙임) — 억제제가 약(교수님 「꼭 외우시고」)",
+    "<b class=\"k\">helicase</b> 가닥 벌림 · <b class=\"k\">SSB</b> 붙잡음 · <b class=\"k\">primase</b> RNA primer",
+    "polymerase: dNTP → <b class=\"k\">pyrophosphate</b> 떨어지며 3′-OH에 붙임"
+   ]
+  },
+  {
+   "id": "bB2",
+   "p": "nB",
+   "cls": "c-tl",
+   "col": "l1",
+   "row": 6,
+   "title": "B-2 대장균 — Pol Ⅰ · Ⅱ · Ⅲ와 Okazaki",
+   "ref": "P3 · 3절 · p.25–28",
+   "keys": [
+    "<b class=\"k\">Pol Ⅲ</b> 복제 주효소 · <b class=\"k\">Pol Ⅰ</b> primer 제거(5′→3′ exo) + gap 채움 · <b class=\"k\">Pol Ⅱ</b> 복구 (필기 「숙지」)",
+    "교정 = <b class=\"k\">3′→5′ exonuclease</b>(합성 5′→3′와 반대 방향)",
+    "lagging strand → <b class=\"k\">Okazaki fragment</b> → gap은 polymerase, <b class=\"k\">nick</b>은 ligase <span class=\"ex\">25-1-04</span>"
+   ]
+  },
+  {
+   "id": "bB3",
+   "p": "nB",
+   "cls": "c-tl",
+   "col": "sl",
+   "span": 2,
+   "row": 6,
+   "title": "B-3 진핵 — origin 여러 개 · α δ ε · PCNA",
+   "ref": "P4 · 1–2절 · p.29–33",
+   "keys": [
+    "<b class=\"k\">α</b>(primase, 시작 · 교정 없음) · <b class=\"k\">δ</b> lagging · <b class=\"k\">ε</b> leading · <b class=\"k\">β</b> 복구 · γ 미토콘드리아",
+    "fork 그림은 「혼자 그릴 수 있어야」(교수님 p.31) <span class=\"ex\">22-1-주박7</span><span class=\"ex\">25-1-05</span><span class=\"ex\">23-1-25</span>",
+    "<b class=\"k\">PCNA</b>: polymerase를 붙잡는 클램프 → 염색하면 증식 세포가 보인다(진단 표지) <span class=\"ex\">25-1-06</span>"
+   ]
+  },
+  {
+   "id": "bB4",
+   "p": "nB",
+   "cls": "c-tl",
+   "col": "r1",
+   "row": 6,
+   "title": "B-4 끝이 짧아지는 문제 — telomere · telomerase",
+   "ref": "P4 · 3절 · p.34–35",
+   "keys": [
+    "primer 자리는 채울 3′-OH가 없다 → 복제마다 <b class=\"k\">5′ 끝</b>이 짧아짐(end replication problem)",
+    "telomere <b class=\"k\">TTAGGG</b> 반복 모자 · telomerase는 자기 <b class=\"k\">RNA(AAUCCC)</b>를 주형으로 <b class=\"k\">3′ overhang</b>을 늘림 = 역전사",
+    "없으면 짧아져 <b class=\"k\">노화</b> ↑ <span class=\"ex\">23-1-23</span>"
+   ]
+  },
+  {
+   "id": "bB5",
+   "p": "nB",
+   "cls": "c-tl",
+   "col": "r2",
+   "row": 6,
+   "title": "B-5 세균 vs 사람 한눈에",
+   "ref": "P3–4 · 혼동 쌍",
+   "keys": [
+    "origin <b class=\"k\">1개 · 원형</b> vs <b class=\"k\">여러 개 · 선형</b>",
+    "Ⅲ/Ⅰ/Ⅱ vs ε·δ/α/β — 섞인 이름(「진핵 Pol Ⅲ」)은 오답",
+    "「DNA 합성은 세포분열 때<b class=\"k\">만</b>」은 오답 — 복구 합성 · telomerase도 합성"
+   ]
+  },
+  {
+   "id": "bC1a",
+   "p": "nC1",
+   "cls": "c-tx",
+   "col": "l2",
+   "row": 9,
+   "title": "손상: thymine dimer(UV) · O6-methylguanine(알킬화)",
+   "ref": "P5 · 1–2절 · p.37–40",
+   "keys": [
+    "UV → 같은 가닥 T–T에 <b class=\"k\">cyclobutane</b> 고리 = <b class=\"k\">thymine dimer</b>(교수님 「딱 한 가지 종류」)",
+    "알킬화 → guanine <b class=\"k\">O6</b>에 CH₃ → 짝과 결합 불가"
+   ]
+  },
+  {
+   "id": "bC2a",
+   "p": "nC2",
+   "cls": "c-tx",
+   "col": "l1",
+   "row": 9,
+   "title": "손상: C 탈아미노화 → U · 작은 염기 손상",
+   "ref": "P5 · 4절 · p.43",
+   "keys": [
+    "DNA에 <b class=\"k\">U</b>가 있다 = C가 망가진 흔적(DNA는 T만 쓴다)",
+    "고치지 않고 복제하면 U–A → <b class=\"k\">C:G → T:A</b>"
+   ]
+  },
+  {
+   "id": "bC3a",
+   "p": "nC3",
+   "cls": "c-tx",
+   "col": "sl",
+   "span": 2,
+   "row": 9,
+   "title": "손상: 부피 큰 왜곡 — thymine dimer(사람) · benzo[a]pyrene 부가물",
+   "ref": "P5 · 4절 · p.43",
+   "keys": [
+    "사람의 <b class=\"k\">thymine dimer</b>는 여기(필기 「사람 예시 ↓」)",
+    "알아채는 주체가 둘: 유전체 어디든 <b class=\"k\">XPC</b>(p.44) / 전사 중 멈춘 <b class=\"k\">RNA polymerase → CSB</b>(TC-NER, p.45)"
+   ]
+  },
+  {
+   "id": "bC4a",
+   "p": "nC4",
+   "cls": "c-tx",
+   "col": "r1",
+   "row": 9,
+   "title": "손상 아님: 복제 중 들어간 틀린 짝 — 새 가닥 표지",
+   "ref": "P6 · 1–3절 · p.46–48",
+   "keys": [
+    "세균: <b class=\"k\">methylation 없는 쪽</b>이 새 가닥(CH₃은 옛 가닥) — 필기 ★★★",
+    "사람: MutH 없음 → 새 가닥의 <b class=\"k\">nick</b>을 기준으로(Excision between mismatch and nick)"
+   ]
+  },
+  {
+   "id": "bC5a",
+   "p": "nC5",
+   "cls": "c-tx",
+   "col": "r2",
+   "row": 9,
+   "title": "손상: 두 가닥 절단 — ionizing radiation",
+   "ref": "P6 · 4절 · p.49",
+   "keys": [
+    "<b class=\"k\">ionizing radiation</b>(X-ray · CT) 대표 원인(필기)",
+    "자연적으로도 끊긴다 — 유전자를 섞는 것이 집단에 유리(교수님 곁이야기)"
+   ]
+  },
+  {
+   "id": "bC1b",
+   "p": "nC1",
+   "cls": "c-tx",
+   "col": "l2",
+   "row": 10,
+   "title": "단계: 결합 하나만 끊는다 — 합성 없음",
+   "ref": "P5 · 2절 · p.38–40",
+   "keys": [
+    "① <b class=\"k\">photoreactivation</b>: 빛(가시광선) + photoreactivating enzyme → 고리 끊음 · <b class=\"k\">사람 ✕ 세균 ○</b>",
+    "② <b class=\"k\">O6-methylguanine methyltransferase</b>: CH₃을 자기 Cys로 옮김(<b class=\"k\">methylcysteine</b>) · 한 번 쓰고 끝",
+    "polymerase · ligase를 쓰지 않는다"
+   ]
+  },
+  {
+   "id": "bC2b",
+   "p": "nC2",
+   "cls": "c-tx",
+   "col": "l1",
+   "row": 10,
+   "title": "단계: 글 · AP · 디 · 폴 · 리",
+   "ref": "P5 · 4절 · p.43",
+   "keys": [
+    "<b class=\"k\">DNA glycosylase</b> 염기–당 결합 절단(골격은 그대로) → <b class=\"k\">AP site</b>",
+    "<b class=\"k\">AP endonuclease</b> 골격 절단 → <b class=\"k\">deoxyribose-phosphodiesterase</b> 당–인산 제거",
+    "<b class=\"k\">DNA polymerase</b> 채움 → <b class=\"k\">ligase</b> 이음"
+   ]
+  },
+  {
+   "id": "bC3b",
+   "p": "nC3",
+   "cls": "c-tx",
+   "col": "sl",
+   "span": 2,
+   "row": 10,
+   "title": "단계: C가 찾고 · A·RPA가 잡고 · B·D가 풀고 · G·F가 자르고 · 폴·리가 메운다",
+   "ref": "P5 · 5–6절 · p.44–45",
+   "keys": [
+    "<b class=\"k\">XPC</b>(+XPA) 인식 → <b class=\"k\">XPA · RPA</b> → <b class=\"k\">TFIIH(XPB + XPD)</b> helicase로 풀기(자르는 게 아니다)",
+    "<b class=\"k\">XPG · XPF/ERCC1</b>(nuclease)이 손상 포함 <b class=\"k\">oligonucleotide</b> 절제 → polymerase · ligase",
+    "TC-NER: 첫 단계만 <b class=\"k\">CSB</b>(· CSA), 나머지 공통 — TFIIH는 전사인자이자 복구 helicase"
+   ]
+  },
+  {
+   "id": "bC4b",
+   "p": "nC4",
+   "cls": "c-tx",
+   "col": "r1",
+   "row": 10,
+   "title": "단계: 붙어서 · 끊고 · 떼어내고 · 채운다",
+   "ref": "P6 · 2–3절 · p.47–48",
+   "keys": [
+    "세균: <b class=\"k\">MutS</b> · <b class=\"k\">MutL</b> · <b class=\"k\">MutH</b>(새 가닥 절단) → helicase · exonuclease가 mismatch까지 제거 → polymerase · ligase",
+    "사람: <b class=\"k\">MSH</b>(= MutS homolog) · <b class=\"k\">MLH</b>(= MutL homolog) — H는 homolog, MutH가 아니다",
+    "「인체에서 작용하는 효소」 = <b class=\"k\">MSH · MLH</b>로 답한다 <span class=\"ex\">22-1-주박9</span>"
+   ]
+  },
+  {
+   "id": "bC5b",
+   "p": "nC5",
+   "cls": "c-tx",
+   "col": "r2",
+   "row": 10,
+   "title": "단계: NHEJ vs HR",
+   "ref": "P6 · 4–6절 · p.49–51",
+   "keys": [
+    "<b class=\"k\">NHEJ</b>(3단어 · ★★): 그냥 붙임 → 끝 염기 <b class=\"k\">소실</b> — 부정확",
+    "<b class=\"k\">HR</b>(2단어): 끊고 · 깎고 · 파고들고 · 베끼고 · 엇갈리고 · 자른다 — 상동 DNA 주형이라 <b class=\"k\">정확</b>",
+    "<b class=\"k\">Holliday</b> 구조: a 절단 = 짧은 구간만 / b 절단 = 팔 교환(crossover) <span class=\"ex\">22-1-주박8</span><span class=\"ex\">23-1-주박2</span><span class=\"ex\">25-1-07</span>"
+   ]
+  },
+  {
+   "id": "bC1c",
+   "p": "nC1",
+   "cls": "c-tx",
+   "col": "l2",
+   "row": 11,
+   "title": "연결: 「사람은 photolyase로 직접 복구」는 오답",
+   "ref": "P5 · 2절",
+   "keys": [
+    "사람의 thymine dimer → <b class=\"k\">NER</b>(C-3) 한 길뿐",
+    "methyltransferase 이름 방향: 붙이는 게 아니라 <b class=\"k\">떼어 옮기는</b> 효소"
+   ]
+  },
+  {
+   "id": "bC2c",
+   "p": "nC2",
+   "cls": "c-tx",
+   "col": "l1",
+   "row": 11,
+   "title": "연결: BER의 PARP1 → 2장 합성치사",
+   "ref": "P12 · 2절 · p.87 범례",
+   "keys": [
+    "<b class=\"k\">PARP1</b>은 BER 경로 · <b class=\"k\">BRCA</b>는 HR 경로(C-5)",
+    "BRCA 결손 암 + PARP 억제제 → 복구 두 길 다 막혀 <b class=\"k\">암세포만 사멸</b> → 2장 T-3"
+   ]
+  },
+  {
+   "id": "bC3c",
+   "p": "nC3",
+   "cls": "c-tx",
+   "col": "sl",
+   "span": 2,
+   "row": 11,
+   "title": "고장: xeroderma pigmentosum · Cockayne syndrome",
+   "ref": "P5 · 5–6절 · P7 · 4절 p.55",
+   "keys": [
+    "<b class=\"k\">XP</b>: NER 전체 고장 → UV 손상이 남아 어린 나이 <b class=\"k\">피부암</b> · xero- = 말라 있다 · 색소 얼룩",
+    "<b class=\"k\">Cockayne syndrome</b>(CSA · CSB): TC-NER 고장 (Table 13.4)"
+   ]
+  },
+  {
+   "id": "bC4c",
+   "p": "nC4",
+   "cls": "c-tx",
+   "col": "r1",
+   "row": 11,
+   "title": "고장: 유전성 대장암(비폴립성) → 표준 유전자 검사",
+   "ref": "P6 · 3절 · P12 · 1절 p.86",
+   "keys": [
+    "고장 → <b class=\"k\">point mutation</b> 누적 → <b class=\"k\">유전성 대장암</b>(MLH1 · MSH2 · MSH5 · PMS2)",
+    "<i class=\"tg q\">교수님</i><q>진단에 사용되거나 치료에 사용되거나, 질병이, 질병을 일으키는 굉장히 중요한 전제이기 때문에 그렇습니다.</q> → <b class=\"k\">panel sequencing</b>에 포함 <span class=\"ex\">25-1-18</span>"
+   ]
+  },
+  {
+   "id": "bC5c",
+   "p": "nC5",
+   "cls": "c-am",
+   "col": "r2",
+   "row": 11,
+   "title": "고장 · 연결: BRCA(HR) · translocation → CML",
+   "ref": "P6 · 5절 · P7 · 2–3절 · p.53–54",
+   "keys": [
+    "<b class=\"k\">BRCA1/2</b> = HR 복구 유전자 → 유전성 유방암 · 난소암 → 2장 T",
+    "제자리에 못 붙으면 <b class=\"k\">translocation</b>: t(9;22) <b class=\"k\">BCR-ABL</b> → <b class=\"k\">CML</b> · Philadelphia = 짧아진 <b class=\"k\">22번</b> · p.53 그림은 t(8;14) <span class=\"ex\">22·23-1-주박11~13</span><span class=\"ex\">23-1-15</span>"
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "id": "x1",
+   "col": "l2",
+   "span": 3,
+   "row": 12,
+   "title": "가로줄 1 · 복구 경로 ↔ 질환 ↔ 기출 (Table 13.4 p.55 + 기출 장부)",
+   "ref": "P7 · 4절 — 「질환 ↔ 고장 난 경로」 짝짓기가 예상 형식",
+   "html": "<table><thead><tr><th>경로(기둥)</th><th>고장 나면</th><th>유전자</th><th>기출</th></tr></thead><tbody><tr><td>C-3 NER</td><td><b class=\"k\">xeroderma pigmentosum</b></td><td>XPA–G</td><td>—</td></tr><tr><td>C-3 TC-NER</td><td><b class=\"k\">Cockayne syndrome</b></td><td>CSA · CSB</td><td>—</td></tr><tr><td>C-4 MMR</td><td><b class=\"k\">유전성 비폴립성 대장암</b>(Lynch)</td><td>MSH · MLH(MLH1 · MSH2 · PMS2)</td><td><span class=\"ex\">22-1-주박9</span><span class=\"ex\">25-1-18</span></td></tr><tr><td>C-5 DSB(HR)</td><td><b class=\"k\">유전성 유방암 · 난소암</b></td><td>BRCA1 · 2</td><td><span class=\"ex\">25-1-07</span><span class=\"ex\">25-1-19</span></td></tr><tr><td>C-5 못 붙임 → 전좌</td><td><b class=\"k\">CML</b></td><td>BCR-ABL t(9;22)</td><td><span class=\"ex\">주박11~13</span><span class=\"ex\">23-1-15</span></td></tr><tr><td>C-1 (사람 ✕)</td><td>—</td><td>photolyase 없음</td><td>—</td></tr></tbody></table>"
+  },
+  {
+   "id": "x2",
+   "col": "sr",
+   "span": 3,
+   "row": 12,
+   "title": "가로줄 2 · 세균 vs 사람 — 이름이 바뀌는 자리",
+   "ref": "P3 · P4 · P5 · P6 혼동 쌍 — 섞인 이름이 오답 선지",
+   "html": "<table><thead><tr><th></th><th>세균(E. coli)</th><th>사람(포유류)</th></tr></thead><tbody><tr><td>복제 주효소 / primer 제거 / 복구</td><td><b class=\"k\">Pol Ⅲ</b> / Pol Ⅰ / Pol Ⅱ</td><td><b class=\"k\">ε(leading) · δ(lagging)</b> / α 시작 / β</td></tr><tr><td>origin</td><td>1개 · 원형</td><td><b class=\"k\">여러 개</b> · 선형(끝 문제 → telomerase)</td></tr><tr><td>thymine dimer</td><td>photoreactivation ○ + NER</td><td><b class=\"k\">NER만</b></td></tr><tr><td>mismatch 단백</td><td><b class=\"k\">MutS · MutL · MutH</b></td><td><b class=\"k\">MSH · MLH</b>(MutH 상동체 없음)</td></tr><tr><td>새 가닥 표지</td><td><b class=\"k\">methylation 없음</b></td><td><b class=\"k\">nick</b></td></tr></tbody></table>"
+  }
+ ],
+ "flow": [
+  [
+   "bA1",
+   "bA2"
+  ],
+  [
+   "bA2",
+   "bA3"
+  ],
+  [
+   "bA3",
+   "bA4"
+  ],
+  [
+   "bA4",
+   "bA5"
+  ],
+  [
+   "bB1",
+   "bB2"
+  ],
+  [
+   "bB2",
+   "bB3"
+  ],
+  [
+   "bB3",
+   "bB4"
+  ]
+ ],
+ "dash": [],
+ "links": []
+}

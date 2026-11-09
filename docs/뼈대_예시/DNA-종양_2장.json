@@ -1,0 +1,287 @@
+{
+ "meta": {
+  "subject": "생화학",
+  "lecture": "DNA · 유전체 의학과 종양 생화학 — 2장 종양(다단계 발암 · oncogene vs TSG)",
+  "prof": "박석인",
+  "week": "1주차(09-04) + 4주차 보강(09-25)",
+  "pages": "p.56–87",
+  "date": "2026-11-10",
+  "guide": "v2.8",
+  "shape": "흐름",
+  "shape_reason": "p.59–60 다단계 발암(정상 → 선종 → 암 → 전이, 한 방향)이 축 · 그 아래 p.82 Table 24-1(필기 ★)이 oncogene · TSG 두 기둥",
+  "note": "학습자료 Part 8–12를 재료로, 새 사실 없음 · 1장(DNA)과 한 강의"
+ },
+ "legend": [
+  {
+   "cls": "c-am",
+   "label": "D 발암 흐름(Part 8)"
+  },
+  {
+   "cls": "c-tx",
+   "label": "O oncogene · gain(Part 9 · 11)"
+  },
+  {
+   "cls": "c-pt",
+   "label": "T TSG · loss(Part 10 · 12)"
+  },
+  {
+   "cls": "c-gy",
+   "label": "출제 제외 언급 구간"
+  }
+ ],
+ "one": "<i class=\"tg s\">자료</i>교수님 설명 — 암은 mutation이 순서대로 쌓여 생기고(multi-step), 쌓이는 변이는 두 방향뿐이다: 자라게 하는 유전자가 켜지거나(oncogene · gain-of-function · 한 짝이면 됨) 멈추게 하는 유전자가 꺼지거나(TSG · loss-of-function · 두 짝 다). 1장 C의 복구가 그 변이를 못 막았을 때의 이야기다. <i class=\"tg x\">제외</i><i class=\"tg q\">교수님</i><q>사실 종양생물학에 제가 암에 대해서 길게 설명드렸는데 그 부분은 제가 시험에 내지는 않아요. 생화학이니까.</q> — 단 같은 교수님이 25-1에 종양 7문항(11 · 12 · 13 · 14 · 16 · 18 · 19)을 냈다: 암 「설명」은 가볍게, 분자 기전은 기출 수준으로 <span class=\"ref\">P1 · 0절 ⚠</span>",
+ "grid": {
+  "cols": [
+   "l2",
+   "l1",
+   "sl",
+   "sr",
+   "r1",
+   "r2"
+  ],
+  "widths": [
+   330,
+   330,
+   235,
+   235,
+   330,
+   330
+  ]
+ },
+ "pills": [],
+ "dividers": [
+  {
+   "row": 3,
+   "text": "두 기둥 — p.82 Table 24-1(필기 ★ · 두 행을 괄호로 묶음): 자라게 하는 유전자가 켜지거나 · 멈추게 하는 유전자가 꺼지거나 · Part 9–12 · p.65–87"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "nD",
+   "num": "D",
+   "name": "다단계 발암(multi-step tumorigenesis) — 순서대로 쌓인다",
+   "cls": "c-am",
+   "cat": "Part 8 · p.56–64",
+   "loc": "정상 샘 → 선종 → 암 → 전이",
+   "col": "l2",
+   "row": 1,
+   "span": 6,
+   "why": "<i class=\"tg q\">교수님</i><q>알고 보니 이 방식이 대부분의 암을 설명할 때 있어서 이렇게 multi-step 방식에 의해서 유전자가 mutation〔?원문: 리테이션〕 되더라고요. Vogelstein의 Vogelgram〔?원문: 보겔그램〕이라고 굉장히 중요한.</q> <span class=\"ref\">p.60 · 필기 ★ · 형광펜</span>",
+   "why2": "<i class=\"tg s\">자료</i>정상 샘은 한 층(unilayer) · 핵은 base 쪽(apicobasal polarity) · 핵이 작다 → 변이가 쌓일수록 핵이 커지고 층이 무너지고 샘 구조가 사라진다(p.57 Gleason 1–5). 대장은 눈(내시경)으로 볼 수 있어 이 모델이 대장암에서 나왔다. 변이가 쌓이는 두 방향이 아래 두 기둥이다."
+  },
+  {
+   "id": "nO",
+   "num": "O",
+   "name": "Proto-oncogene → Oncogene",
+   "cls": "c-tx",
+   "cat": "gain-of-function · dominant(한 짝)",
+   "loc": "Part 9 · p.65–71 · P11 p.83–85",
+   "col": "l2",
+   "row": 4,
+   "span": 3,
+   "why": "<i class=\"tg q\">교수님</i><q>그 기능이 평상시에는 세포를 성장 또는 분화 분열하게〔?원문: 유열하게〕 만드는데 그게 갑자기 커지게 되면은 그게 결국에 암으로 가게 됩니다. 이게 이제 oncogene〔?원문: 공포진〕의 핵심 개념입니다.</q> <span class=\"ref\">p.67 · 필기 「종양 암의 핵심 원리」</span>",
+   "why2": "<i class=\"tg s\">자료</i>정상 세포에도 있는 성장 신호 유전자(c-SRC · ABL · RAS · EGFR)가 과하게 · 항상 켜진 것. 한 짝만 켜져도 켜진 것이라 대개 살면서 생긴다(가계 아님, p.77)."
+  },
+  {
+   "id": "nT",
+   "num": "T",
+   "name": "Tumor suppressor gene (TSG)",
+   "cls": "c-pt",
+   "cat": "loss-of-function · recessive(두 짝 · two-hit)",
+   "loc": "Part 10 · p.75–80 · P12 p.86–87",
+   "col": "sr",
+   "row": 4,
+   "span": 3,
+   "why": "<i class=\"tg q\">교수님</i><q>얘는 mutation이 loss of function mutation에 의해서 일어난다. oncogene〔?원문: 원포진〕은 gain of function mutation에 의해서 일어난다.</q> <span class=\"ref\">p.78 · 형광펜</span>",
+   "why2": "<i class=\"tg s\">자료</i>브레이크 · 검문소 · 자살 · 복구를 맡는 유전자 — 한 짝만 멀쩡해도 작동하므로 두 짝 다 꺼져야 암(two-hit · LOH). germline 한 짝 + somatic 한 짝 → 가족성 암(Rb 양측성 · BRCA). DNA 복구 유전자(BRCA · MSH/MLH)가 여기 들어가 1장 C와 만난다."
+  }
+ ],
+ "branches": [
+  {
+   "id": "bD1",
+   "p": "nD",
+   "cls": "c-am",
+   "col": "l2",
+   "row": 2,
+   "title": "D-1 전립선 — PIN → 침윤암 → 전이암",
+   "ref": "P8 · 2–3절 · p.57–59",
+   "keys": [
+    "Normal acinus → <b class=\"k\">PIN</b> → invasive carcinoma → metastatic carcinoma",
+    "잃는 유전자 순서: <b class=\"k\">NKX3.1</b>(8p21) → <b class=\"k\">PTEN · Rb</b>(10q · 13q) → <b class=\"k\">p53</b>(17p) — 「Loss of」= TSG",
+    "p.57 1–5단계: 핵 커짐 → 2층 → 샘 구조 상실 · 실제 조직은 단계가 섞임(이질성, 4주차)"
+   ]
+  },
+  {
+   "id": "bD2",
+   "p": "nD",
+   "cls": "c-am",
+   "col": "l1",
+   "row": 2,
+   "title": "D-2 대장 — Vogelgram ★",
+   "ref": "P8 · 3절 · p.60",
+   "keys": [
+    "정상 상피 → small adenoma → large adenoma → carcinoma → 침윤",
+    "<b class=\"k\">APC</b>(30–50세) → <b class=\"k\">RAS</b>(40–60세) → <b class=\"k\">PI3K · cell cycle/apoptosis · TGF-β</b>(50–70세)",
+    "adenoma = 양성(tumor) · carcinoma = 악성(cancer) — Cancer = (Malignant) Tumor · 순서 바꾼 선지(RAS → APC) 조심"
+   ]
+  },
+  {
+   "id": "bD3",
+   "p": "nD",
+   "cls": "c-am",
+   "col": "sl",
+   "span": 2,
+   "row": 2,
+   "title": "D-3 원리 — mutation의 누적 · gain-of-function의 네 원인",
+   "ref": "P9 · 3절 · p.67–68",
+   "keys": [
+    "Cancer is caused by the <b class=\"k\">accumulation of mutations</b> — 1장 C의 복구가 못 막은 것",
+    "원인 4: <b class=\"k\">radiation · 화학 발암물질</b> / <b class=\"k\">전좌 · 전위</b> / <b class=\"k\">증폭</b> / <b class=\"k\">바이러스 유전자 · 산물</b> <span class=\"ex\">25-1-13</span>",
+    "안테나 비유: 수용체 4개면 신호 과증폭(증폭) · 스위치 RAS가 켜진 채(점 돌연변이) · 프로모터가 늘 켜짐"
+   ]
+  },
+  {
+   "id": "bD4",
+   "p": "nD",
+   "cls": "c-am",
+   "col": "r1",
+   "row": 2,
+   "title": "D-4 진행 — 침윤 vs 전이",
+   "ref": "P8 · 4절 · p.61",
+   "keys": [
+    "<b class=\"k\">침윤(invasion)</b>: 옆으로 파고듦 / <b class=\"k\">전이(metastasis)</b>: 혈관 타고 다른 장기로",
+    "genomic instability → 변이가 더 빨리 쌓여 발암이 빨라짐(4주차)"
+   ]
+  },
+  {
+   "id": "bD5",
+   "p": "nD",
+   "cls": "c-gy",
+   "col": "r2",
+   "row": 2,
+   "title": "D-5 Hallmarks — 1주차 ✕ 「다 건너뛰도록」, 4주차 「매우 중요」, 기출 25-1-11",
+   "ref": "P8 · 5절 · p.62–64",
+   "keys": [
+    "2000년 6 + 2011년 4 — 추가 넷 = <b class=\"k\">에너지 · 면역 회피</b>(Emerging) + <b class=\"k\">유전체 불안정 · 염증</b>(Enabling) <span class=\"ex\">25-1-11</span>",
+    "특징마다 약이 붙는다: genome instability → <b class=\"k\">PARP inhibitor</b> · proliferative signaling → EGFR inhibitor(p.64)"
+   ]
+  },
+  {
+   "id": "bO1",
+   "p": "nO",
+   "cls": "c-tx",
+   "col": "l2",
+   "row": 5,
+   "title": "O-1 이름 셋 · 꼭 알 oncogene 8",
+   "ref": "P9 · 1 · 4절 · p.65 · 69–70",
+   "keys": [
+    "<b class=\"k\">v-Src</b>(바이러스 RSV) · <b class=\"k\">c-SRC</b>(세포 = proto-oncogene) · <b class=\"k\">SRC</b>(켜진 oncogene) <span class=\"ex\">25-1-12</span>",
+    "안테나 둘(<b class=\"k\">EGFR · PDGFR</b>) → 스위치 <b class=\"k\">ras</b> → 세린 둘(<b class=\"k\">raf · akt2</b>) · 티로신 둘(<b class=\"k\">abl · src</b>) → 핵 <b class=\"k\">myc</b>",
+    "Bcl-2만 mitochondria(anti-apoptosis) · fos/jun은 인산화(DNA 변화 ✕) · 사람 유전자는 이탤릭 대문자"
+   ]
+  },
+  {
+   "id": "bO2",
+   "p": "nO",
+   "cls": "c-tx",
+   "col": "l1",
+   "row": 5,
+   "title": "O-2 켜지는 세 방식 — 점 · 전좌 · 증폭",
+   "ref": "P9 · 5절 · p.71 · P11 · 4절 p.85",
+   "keys": [
+    "<b class=\"k\">point mutation</b> → 항상 켜진 단백(ras) / <b class=\"k\">translocation</b> → 키메라 · 엉뚱한 조절(abl · PDGFR · myc)",
+    "<b class=\"k\">amplification</b> → 과잉 생산(erb-b2 · akt2 · myc · cyclin D · CDK4)",
+    "p.85 증폭 표에서 강조 유전자를 알아볼 것(EGFR · erbB2 · ras · myc · akt2) — 통째 암기는 ✕(4주차)",
+    "ras는 점 돌연변이도, 증폭도 된다 — 한 유전자가 한 방식만은 아니다"
+   ]
+  },
+  {
+   "id": "bO3",
+   "p": "nO",
+   "cls": "c-tx",
+   "col": "sl",
+   "row": 5,
+   "title": "O-3 임상 — HER2 · CML",
+   "ref": "P10 · 1절 p.72–73 · P7 · 3절 p.54 · P11 · 3절 p.83–84",
+   "keys": [
+    "<b class=\"k\">HER2</b>(= erb-b2 = EGFR2, 증폭): 유방암을 HER2 ± 로 가름 — IHC · FISH → <b class=\"k\">trastuzumab</b> · pertuzumab · <b class=\"k\">T-DM1</b>(항체–약물) · TKI <span class=\"ex\">25-1-14</span>",
+    "<b class=\"k\">BCR-ABL</b>: t(9;22) → hybrid tyrosine kinase 항상 켜짐 → <b class=\"k\">CML</b> · 핵형 9q+ · 22q− · Philadelphia = <b class=\"k\">der(22)</b> <span class=\"ex\">23-1-15</span><span class=\"ex\">22·23-1-주박11~13</span>",
+    "RNA 종양 바이러스 RSV가 oncogene 개념의 출발(p.65–66)"
+   ]
+  },
+  {
+   "id": "bT1",
+   "p": "nT",
+   "cls": "c-pt",
+   "col": "sr",
+   "row": 5,
+   "title": "T-1 역할 넷 — p.79(전부 형광펜)",
+   "ref": "P10 · 3 · 5절 · p.75 · 79",
+   "keys": [
+    "브레이크 <b class=\"k\">p16 · pRB</b> / 검문소 <b class=\"k\">p53</b> / 자살 · 억제 <b class=\"k\">p53 · PTEN</b> / 복구 <b class=\"k\">BRCA</b>",
+    "<b class=\"k\">p53</b> = Guardian of Genome(돌아다니며 손상 감지 → 멈춤 → 복구 호출 · 질환 칸 「Most cancers」)",
+    "RB는 「개념용」, 나머지는 임상에서 널리(교수님 p.79) · RB 필기 「눈에만 발생 ★」"
+   ]
+  },
+  {
+   "id": "bT2",
+   "p": "nT",
+   "cls": "c-pt",
+   "col": "r1",
+   "row": 5,
+   "title": "T-2 two-hit · LOH · 꺼지는 세 방식",
+   "ref": "P10 · 4–5절 · p.76–77 · 80 · P11 · 2절 p.82",
+   "keys": [
+    "가족성 Rb = germline 1 + somatic 1 → <b class=\"k\">양측성</b> / 산발성 = 한 눈에 2번 → 편측 · 두 짝 다 잃음 = <b class=\"k\">LOH</b>",
+    "꺼지는 3: <b class=\"k\">point mutation</b>(항상 꺼진 단백) · <b class=\"k\">deletion</b> · <b class=\"k\">promoter 과메틸화</b>(epigenetic silencing)",
+    "열 바꾸기 오답: 「TSG 변이는 dominant」✕ · 「TSG는 주로 증폭으로」✕ <span class=\"ex\">25-1-16</span><span class=\"ex\">22·23-1-주박14 · 15</span>"
+   ]
+  },
+  {
+   "id": "bT3",
+   "p": "nT",
+   "cls": "c-pt",
+   "col": "r2",
+   "row": 5,
+   "title": "T-3 임상 — BRCA · 합성치사 · MSH/MLH · DNA 바이러스",
+   "ref": "P12 · p.86–87 · P11 · 1절 p.81",
+   "keys": [
+    "<b class=\"k\">BRCA1/2</b> germline → 유전성 유방암 · 난소암(안젤리나 졸리 · panel sequencing) <span class=\"ex\">25-1-18</span><span class=\"ex\">25-1-10</span>",
+    "<b class=\"k\">합성치사</b>: BRCA(HR) 결손 세포에 <b class=\"k\">PARP 억제제</b>(BER) → 두 길 다 막혀 암세포만 죽음 — two-hit(같은 유전자 두 allele)과 다름 <span class=\"ex\">22·23-1-주박16</span><span class=\"ex\">25-1-19</span>",
+    "DNA 바이러스가 TSG를 끈다: HPV <b class=\"k\">E6 → p53</b> · <b class=\"k\">E7 → pRB</b> · SV40 Large T는 둘 다"
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "id": "y1",
+   "col": "l2",
+   "span": 3,
+   "row": 6,
+   "title": "가로줄 1 · oncogene vs TSG 비교표 (p.82 Table 24-1 · 필기 ★)",
+   "ref": "P11 · 2절 — 형광펜 10곳이 곧 시험 문장",
+   "html": "<table><thead><tr><th></th><th>Proto-oncogene → oncogene</th><th>Tumor suppressor gene</th></tr></thead><tbody><tr><td>정상 기능</td><td>자라게 · 살게 · 증식하게</td><td>멈추게 · 손상 평가 · 복구</td></tr><tr><td>변이 효과</td><td><b class=\"k\">gain-of-function</b></td><td><b class=\"k\">loss-of-function</b></td></tr><tr><td>우성 / 열성</td><td><b class=\"k\">dominant</b>(한 짝)</td><td><b class=\"k\">recessive</b>(두 짝 · two-hit)</td></tr><tr><td>변이 원인</td><td>점 · <b class=\"k\">전좌</b> · <b class=\"k\">증폭</b></td><td>점 · <b class=\"k\">결실</b> · <b class=\"k\">메틸화</b></td></tr><tr><td>예</td><td>EGFR2 · abl · ras · myc · src</td><td>p53 · RB · p16 · PTEN · BRCA</td></tr><tr><td>바이러스</td><td>RNA(RSV) v-src</td><td>DNA(HPV) E6 · E7이 끈다</td></tr><tr><td>가계 유전</td><td>대개 ✕(살면서)</td><td>germline 흔함(Rb · BRCA)</td></tr><tr><td>caretaker 행</td><td colspan=\"2\">복구 유전자를 따로 뗀 교과서 분류 — 강의는 <b class=\"k\">BRCA = TSG</b>로 가르친다(p.75 · 79 · 86)</td></tr></tbody></table>"
+  },
+  {
+   "id": "y2",
+   "col": "sr",
+   "span": 3,
+   "row": 6,
+   "title": "가로줄 2 · 「어느 마디인가」 — 동일 교수 종양 기출을 자리에",
+   "ref": "25-1 7문항 + 22 · 23 주관식",
+   "html": "<table><thead><tr><th>기출</th><th>묻는 것</th><th>마디</th></tr></thead><tbody><tr><td><span class=\"ex\">25-1-11</span></td><td>Hallmarks 2000 vs 2011 추가</td><td><b class=\"k\">D-5</b></td></tr><tr><td><span class=\"ex\">25-1-12</span></td><td>Src — v/c · overexpression</td><td><b class=\"k\">O-1</b></td></tr><tr><td><span class=\"ex\">25-1-13</span></td><td>gain 네 원인 · 「언제나 가계 유전」✕</td><td><b class=\"k\">D-3</b></td></tr><tr><td><span class=\"ex\">25-1-14</span></td><td>HER2 — 증폭 · 항체 치료</td><td><b class=\"k\">O-3</b></td></tr><tr><td><span class=\"ex\">25-1-16</span></td><td>proto-oncogene vs TSG · dominant?</td><td><b class=\"k\">T-2</b></td></tr><tr><td><span class=\"ex\">25-1-18</span><span class=\"ex\">25-1-19</span></td><td>BRCA · MSH/MLH · 합성치사</td><td><b class=\"k\">T-3</b></td></tr><tr><td><span class=\"ex\">23-1-15</span><span class=\"ex\">주박11~13</span></td><td>CML 핵형 · fusion gene · 약</td><td><b class=\"k\">O-3</b></td></tr><tr><td><span class=\"ex\">주박14 · 15</span><span class=\"ex\">주박16</span></td><td>EGFR2 vs BRCA 기전 차이 · 합성치사</td><td><b class=\"k\">T-2 · T-3</b></td></tr></tbody></table>"
+  }
+ ],
+ "flow": [],
+ "dash": [],
+ "links": [
+  [
+   "nD",
+   "nO"
+  ],
+  [
+   "nD",
+   "nT"
+  ]
+ ]
+}
