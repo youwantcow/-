@@ -1,0 +1,95 @@
+/* recall.css v1.0 — 인출 노트용 스니펫 (recall_kit v1.0 · 지침 v2.9)
+   넣는 곳: 보관함/.obsidian/snippets/  →  설정 › 모양 › CSS 스니펫에서 켠다.
+   인출 노트(속성 cssclasses 에 recall 이 든 노트)에만 듣는다. 다른 노트의 형광펜은 그대로다. */
+
+/* ── 1. 형광펜 = 빈칸 ────────────────────────────────────────────────
+   ==이렇게== 친 글자는 가려진다. 누르면(노트북은 마우스를 올리면) 보이고, 다른 곳을 누르면 다시 가려진다.
+   틀린 자리에 형광펜을 치면 그게 다음부터 빈칸이 된다. */
+.recall mark,
+.recall .cm-highlight {
+  color: transparent !important;
+  background-color: var(--background-modifier-border) !important;
+  border-radius: 3px;
+  cursor: pointer;                              /* iOS가 누름을 hover로 받게 하는 데 필요 */
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.1s ease, background-color 0.1s ease;
+}
+.recall mark *,
+.recall .cm-highlight * {
+  color: transparent !important;
+}
+.recall mark:hover,
+.recall mark:active,
+.recall .cm-highlight:hover,
+.recall .cm-highlight:active,
+.recall tr:has(td:first-child:hover) mark,
+.recall tr:has(th:first-child:hover) mark {
+  color: var(--text-normal) !important;
+  background-color: var(--text-highlight-bg) !important;
+}
+.recall mark:hover *,
+.recall mark:active *,
+.recall .cm-highlight:hover *,
+.recall tr:has(td:first-child:hover) mark *,
+.recall tr:has(th:first-child:hover) mark * {
+  color: inherit !important;
+}
+.recall table td:first-child,
+.recall table th:first-child {
+  cursor: pointer;                              /* 표의 첫 칸을 누르면 그 줄의 빈칸이 다 보인다 */
+}
+
+/* ── 2. 가림표  > [!cover]  ─────────────────────────────────────────
+   형광펜 없이 첫 열만 보이고 나머지 칸이 통째로 가려지는 표(혼동 쌍 비교).
+   칸을 누르면 그 칸이, 첫 열을 누르면 그 줄이 보인다. 카드는 되지 않는다. */
+.callout[data-callout="cover"] { --callout-color: var(--color-purple-rgb); --callout-icon: lucide-eye-off; }
+.callout[data-callout="cover"] tbody td { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.callout[data-callout="cover"] tbody td:not(:first-child) { position: relative; }
+.callout[data-callout="cover"] tbody td:not(:first-child)::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 4px;
+  background:
+    linear-gradient(var(--background-modifier-border), var(--background-modifier-border)),
+    var(--background-primary);
+  opacity: 1;
+  transition: opacity 0.12s ease;
+}
+.callout[data-callout="cover"] tbody td:not(:first-child):hover::after,
+.callout[data-callout="cover"] tbody td:not(:first-child):active::after,
+.callout[data-callout="cover"] tbody tr:has(td:first-child:hover) td::after,
+.callout[data-callout="cover"] tbody tr:has(td:first-child:active) td::after {
+  opacity: 0;
+}
+
+/* ── 3. 반복 플러그인(Spaced Repetition)의 복습 화면 ──────────────────
+   노트에서는 접혀 있는 「답 · 해설」을, 복습 화면에서 정답을 확인할 때는 펼쳐서 보여 준다. */
+.sr-card-container .callout.is-collapsed > .callout-content {
+  display: block !important;
+}
+.sr-card-container .callout .callout-fold {
+  display: none;
+}
+
+/* ── 4. 콜아웃 모양 ─────────────────────────────────────────────── */
+.callout[data-callout="drill"] { --callout-color: var(--color-cyan-rgb); --callout-icon: lucide-table; }
+.callout[data-callout="page"]  { --callout-color: 140, 140, 140; --callout-icon: lucide-book-open; }
+.callout[data-callout="page"] {
+  background-color: transparent;
+  border: 1px solid var(--background-modifier-border);
+}
+.callout[data-callout="page"] > .callout-title { font-size: var(--font-smaller); font-weight: var(--font-normal); }
+
+/* 본문 속 쪽 링크(p.14)는 점선 밑줄로 조용하게 */
+.markdown-rendered a.internal-link[data-href*=".pdf#page="] {
+  color: var(--text-muted);
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+.markdown-rendered a.internal-link[data-href*=".pdf#page="]:hover { color: var(--link-color); }
+
+@media print {
+  .recall mark, .recall mark * { color: inherit !important; background-color: transparent !important; }
+  .callout[data-callout="cover"] tbody td::after { display: none; }
+}
