@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""recall_kit.py v1.0 · 지침 v2.9 — 학습자료 HTML(지침 v2.7+) → Obsidian 인출 노트
+"""recall_kit.py v1.1 · 지침 v2.9 — 학습자료 HTML(지침 v2.7+) → Obsidian 인출 노트
 
 읽기용 사본은 만들지 않는다. 학습자료에 이미 들어 있는 「꺼내게 만드는 것」만 골라
 ① 노트 안에서는 가림(형광펜 = 빈칸, 답은 접힘) ② Spaced Repetition 플러그인에는 카드가 되게 옮긴다.
@@ -44,6 +44,11 @@ SUPS = str.maketrans("0123456789+-−", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁻")
 
 def is_punct(ch):
     return bool(ch) and unicodedata.category(ch)[0] in "PS"
+
+
+def plab(pno):
+    """Part 번호 → 머리글 이름. 강의 틀(지침 v2.7 Step 4의 3)은 Part가 아니라 「강의 틀」."""
+    return "강의 틀" if pno == "틀" else f"Part {pno}"
 
 
 def classes(el):
@@ -460,11 +465,11 @@ class R:
                         pg = t.find("h2").find("span", class_="pg") if t.find("h2") else None
                         m = re.search(r"p\.(\d+)", self.plain(pg)) if pg else None
                         if "pack" in cls:
-                            self.targets[hid] = ("h", self.N["con"], f"Part {pno}")
+                            self.targets[hid] = ("h", self.N["con"], plab(pno))
                         elif m:
                             self.targets[hid] = ("p", int(m.group(1)))
                         else:
-                            self.targets[hid] = ("h", self.N["con"], f"Part {pno}")
+                            self.targets[hid] = ("h", self.N["con"], plab(pno))
                     elif "box" in cls and ("p1" in cls or "p1d" in cls):
                         label, title, subject, pg, _ = self.box_parts(t)
                         self.targets[hid] = ("h", self.N["con"], self.uniq(self.N["con"], self.heading(f"★ {subject} · {label}")))
@@ -737,19 +742,24 @@ class R:
         qs = [m["question"] for m in metas if m["question"]]
         flow.append("## 강의 전체")
         if qs:
-            flow.append(self.qa([f"이 강의는 Part {len(metas)}개로 간다. 각 Part가 답하는 질문을 순서대로 말해 봐."],
-                                [f"{i}. {self.hide(q)}" for i, q in enumerate(qs, 1)]))
+            npart = sum(1 for m in metas if m["pno"] != "틀")
+            if npart < len(metas):
+                ask = f"이 강의는 Part {npart}개와 강의 틀로 간다. 각 Part와 강의 틀이 답하는 질문을 순서대로 말해 봐."
+            else:
+                ask = f"이 강의는 Part {npart}개로 간다. 각 Part가 답하는 질문을 순서대로 말해 봐."
+            qlab = [("강의 틀 — " if m["pno"] == "틀" else "") for m in metas if m["question"]]
+            flow.append(self.qa([ask], [f"{i}. {lb}{self.hide(q)}" for i, (lb, q) in enumerate(zip(qlab, qs), 1)]))
         for (pno, nodes), mt in zip(parts, metas):
-            ph = f"Part {pno} (p.{mt['pages']})"
+            ph = f"{plab(pno)} (p.{mt['pages']})"
             flow.append(f"## {ph}")
             if mt["flow"]:
-                flow.append(self.qa([f"Part {pno} — 흐름을 처음부터 끝까지 말해 봐."],
+                flow.append(self.qa([f"{plab(pno)} — 흐름을 처음부터 끝까지 말해 봐."],
                                     [" → ".join(self.hide(x) for x in mt["flow"])]))
             if mt["link"]:
-                flow.append(self.qa([f"Part {pno} — 앞뒤 Part와 어떻게 이어지나?"], [self.hide(mt["link"])]))
+                flow.append(self.qa([f"{plab(pno)} — 앞뒤 Part와 어떻게 이어지나?"], [self.hide(mt["link"])]))
             secs = [(h, p) for h, p in mt["sections"]]
             if secs:
-                flow.append(self.qa([f"Part {pno} — 절 {len(secs)}개를 순서대로 말해 봐. (주제 — 부제)"],
+                flow.append(self.qa([f"{plab(pno)} — 절 {len(secs)}개를 순서대로 말해 봐. (주제 — 부제)"],
                                     [f"{i}. {self.hide(h)}" + (f" {p}" if p else "") for i, (h, p) in enumerate(secs, 1)]))
             for el in nodes:
                 if el.name != "section" or "pack" in classes(el):
@@ -915,7 +925,12 @@ def build(a):
     parts, metas = [], []
     for p in rp:
         m = re.search(r"Part\s*(\d+[a-z]?)", p["h1"].get_text())
-        pno = m.group(1) if m else str(len(parts) + 1)
+        if m:
+            pno = m.group(1)
+        elif "강의 틀" in p["h1"].get_text():
+            pno = "틀"
+        else:
+            pno = str(len(parts) + 1)
         parts.append((pno, p["nodes"]))
     r.register(parts)
     for (pno, nodes), p in zip(parts, rp):
@@ -981,8 +996,8 @@ def build(a):
     if extras:
         hub[9:9] = ["한눈에 → " + " · ".join(extras), ""]
     for mt in metas:
-        hub.append(f"- **Part {mt['pno']}** (p.{mt['pages']}) — {mt['question']}")
-        hub.append("    - " + " · ".join(f"[[{N[k]}#Part {mt['pno']} (p.{mt['pages']})|{lab}]]" for k, lab in (("flow", "흐름"), ("con", "개념"), ("exam", "기출"), ("page", "표와 쪽"))))
+        hub.append(f"- **{plab(mt['pno'])}** (p.{mt['pages']}) — {mt['question']}")
+        hub.append("    - " + " · ".join(f"[[{N[k]}#{plab(mt['pno'])} (p.{mt['pages']})|{lab}]]" for k, lab in (("flow", "흐름"), ("con", "개념"), ("exam", "기출"), ("page", "표와 쪽"))))
     notes[N["hub"]] = "\n".join(hub) + "\n"
 
     out_dir = os.path.join(a.out, a.lecture)

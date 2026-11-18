@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""check_recall.py v1.0 · 지침 v2.9 — recall_kit.py가 만든 인출 노트를 원본 HTML과 대조한다.
+"""check_recall.py v1.1 · 지침 v2.9 — recall_kit.py가 만든 인출 노트를 원본 HTML과 대조한다.
 
   python3 check_recall.py 전체.html OUT/분자생물학 --lecture Intro1-1 --pages 38
 
@@ -19,7 +19,8 @@ from bs4 import BeautifulSoup, NavigableString
 
 FRAMES = ["요지", "정의는", "요점", "가지는", "자주 혼동되는 점은", "한 줄 결론과 그 이유는", "시험에서는 어떻게 묻나", "무엇을 조심하라는 거지",
           "어떤 모양으로 나올 수 있지", "흐름을 처음부터 끝까지 말해 봐", "앞뒤 Part와 어떻게 이어지나", "절", "개를 순서대로 말해 봐", "주제", "부제",
-          "방향 사슬", "첫 칸에서 끝까지 이어 봐", "이 강의는 Part", "개로 간다", "각 Part가 답하는 질문을 순서대로 말해 봐", "사슬을 이어 봐",
+          "방향 사슬", "첫 칸에서 끝까지 이어 봐", "이 강의는 Part", "개로 간다", "각 Part가 답하는 질문을 순서대로 말해 봐",
+          "개와 강의 틀로 간다", "각 Part와 강의 틀이 답하는 질문을 순서대로 말해 봐", "강의 틀", "사슬을 이어 봐",
           "표로 보기", "번째 줄", "번째 칸", "빈칸", "함정", "기출", "변형 예측", "AI 추정", "퀴즈", "원 기출", "답", "해설", "근거",
           "떠올린 뒤 열기", "첫 칸만 보고 나머지를 말해 봐", "빈칸 인출", "강의자료", "열기", "이 쪽은 글 없이 그림만 있어"]
 
@@ -105,7 +106,7 @@ def main():
         if not isinstance(t, NavigableString):
             continue
         s = re.sub(r"<(/?su[bp])>", "", str(t))
-        if t.parent.name == "strong" and s.strip() == "이 Part가 답하는 질문:":
+        if t.parent.name == "strong" and re.fullmatch(r"이 (Part|틀)(가|이) 답하는 질문:", s.strip()):
             continue
         if t.parent.name == "figcaption":
             s = re.sub(r"^\s*강의자료", "", s)
@@ -153,7 +154,7 @@ def main():
             if not raw or raw == "?" or raw.startswith(("[!", "|")) and "---" in raw:
                 continue
             raw = re.sub(r"^#{1,6}\s+|^(\d+\\?[.)]|[-+*])\s+", "", raw)
-            raw = re.sub(r"Part \d+ \(p\.[\d–\-]+\)", " ", raw)
+            raw = re.sub(r"(Part \d+[a-z]?|강의 틀) \(p\.[\d–\-]+\)", " ", raw)
             for seg in re.split(r"\s*[·→—|:;,.?!()「」『』/]\s*|==|\*\*|~|\s{2,}", md_plain(raw)):
                 key = alnum(seg)
                 for f in frames:
