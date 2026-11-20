@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""recall_kit.py v1.1 · 지침 v2.9 — 학습자료 HTML(지침 v2.7+) → Obsidian 인출 노트
+"""recall_kit.py v1.2 · 지침 v3.1 — 학습자료 HTML(지침 v2.7+) → Obsidian 인출 노트
 
 읽기용 사본은 만들지 않는다. 학습자료에 이미 들어 있는 「꺼내게 만드는 것」만 골라
 ① 노트 안에서는 가림(형광펜 = 빈칸, 답은 접힘) ② Spaced Repetition 플러그인에는 카드가 되게 옮긴다.
@@ -8,6 +8,9 @@
   python3 recall_kit.py build 전체.html --pdf 강의자료.pdf --lecture Intro1-1 --subject 분자생물학 -o OUT/분자생물학 \
           [--canvas 뼈대.canvas] [--outline 뼈대.md]
   python3 recall_kit.py pack OUT/분자생물학/Intro1-1 -o 인출_분자생물학_Intro1-1.zip [--first-time]
+
+v1.2(지침 v3.1): 혼동 쌍 비교표를 세 모양(h3 소제목 + 표 · [표 해설] 박스 · 표만) 모두 읽고 표 뒤 문단도 옮긴다 ·
+변형 예측 문제 머리의 메타를 모두 뒷면에 · 문장 속 라벨 글자는 남긴다 · id 달린 [표 해설]·[그림 해설] 박스 링크를 그 쪽으로.
 
 강의 하나 = 폴더 하나(OUT/과목/강의/ 안에 노트 · 뼈대 · 첨부/). 보관함의 과목 폴더에 그 폴더만 끌어다 놓으면 된다.
 
@@ -166,7 +169,12 @@ class R:
             elif name == "br":
                 out.append("<br>")
             elif name == "span" and ("lb" in cls or "imp" in cls):
-                if "판독 불가" in ch.get_text():
+                prev = ch.previous_sibling
+                while prev is not None and isinstance(prev, NavigableString) and not str(prev).strip():
+                    prev = prev.previous_sibling
+                if "lb" in cls and prev is not None and str(getattr(prev, "text", prev)).strip():
+                    out.append(self.text(ch.get_text(), ctx))   # v1.2: 「…해설에서는 [외부 지식]으로 표시했어」처럼 문장 속에 쓴 라벨 — 지우면 문장에 구멍이 난다
+                elif "판독 불가" in ch.get_text():
                     out.append(" (판독 불가)")
             elif name == "span" and "hand" in cls:
                 out.append(f'<span class="hand">✎ {self._inl(ch, dict(ctx, link=False)).strip()}</span>')
@@ -473,6 +481,17 @@ class R:
                     elif "box" in cls and ("p1" in cls or "p1d" in cls):
                         label, title, subject, pg, _ = self.box_parts(t)
                         self.targets[hid] = ("h", self.N["con"], self.uniq(self.N["con"], self.heading(f"★ {subject} · {label}")))
+                    elif "box" in cls and ("tbl" in cls or "fig" in cls or "trap" in cls or "ai" in cls):
+                        # v1.2: id가 달린 [표 해설] · [그림 해설] 등 — 그 박스가 설명하는 쪽(제목의 p.N, 없으면 앞쪽 가장 가까운 쪽 이미지)으로
+                        _, _, _, pg, _ = self.box_parts(t)
+                        m = re.search(r"p\.(\d+)", pg or "")
+                        if not m:
+                            prev = t.find_previous("figure", class_="slide")
+                            img = prev.find("img") if prev is not None and "exam" not in classes(prev) else None
+                            if img is not None and img.get("data-page"):
+                                m = re.match(r"(\d+)", img["data-page"])
+                        if m:
+                            self.targets[hid] = ("p", int(m.group(1)))
                     elif "cc" in cls:
                         hd = t.find("p", class_="hd")
                         ttl = self.plain(hd, drop=("en", "a"))
@@ -514,7 +533,7 @@ class R:
             how = re.sub(r"^\[변형 출제 예측\]\s*", "", who)
             src = next((m for m in meta if m.startswith("원 기출")), "")
             front = f"**변형 예측 (AI 추정)** — {self.esc(src)} · {self.esc(how)}"
-            rest = [m for m in meta if m.startswith("대응")]
+            rest = [m for m in meta if m != src]   # v1.2: 「대응 …」만 남기던 것을 — 「Part 5 p.41–46」 · 「같은 개념의 C3 변형은 …」도 버리지 않는다
             if rest:
                 rc = BeautifulSoup("<p></p>", "html.parser").p
                 rc.string = " · ".join(rest)
@@ -834,14 +853,39 @@ class R:
                 page.append("### 표 — 빈칸 인출")
                 for d in drills:
                     page.extend(self.drill(d))
-            covers = [b for el in nodes if el.name == "section" and (el.get("id") or "").endswith("end")
-                      for b in el.find_all("div", class_="tbl", recursive=False)]
+            # 혼동 쌍 표(Part 마무리) — v1.2: [표 해설] 박스(지침 v3.1의 문법) · 박스 없이 놓인 표 · h3 소제목 + 표를 모두 읽는다.
+            # 박스 안의 문단(「읽는 법」 등)도 함께 옮긴다. 빈칸 인출(div.drill) 안의 표는 위에서 따로 다룬다
+            covers = []
+            for el in nodes:
+                if el.name != "section" or not (el.get("id") or "").endswith("end"):
+                    continue
+                h3 = last = None
+                for ch in kids(el):
+                    c = classes(ch)
+                    if ch.name == "h3":
+                        h3 = self.plain(ch)
+                        continue
+                    if ch.name == "div" and "tbl" in c:
+                        _, title, _, _, _ = self.box_parts(ch)
+                        covers.append((title or h3 or "혼동 쌍 비교", ch.find_all("div", class_="tw", recursive=False),
+                                       [k for k in kids(ch) if k.name in ("p", "ul", "ol") and "hd" not in classes(k)]))
+                    elif ch.name == "div" and "tw" in c:
+                        covers.append((h3 or "혼동 쌍 비교", [ch], []))
+                        h3, last = None, ch
+                        continue
+                    elif ch.name in ("p", "ul") and covers and last is not None and covers[-1][1] and covers[-1][1][-1] is last:
+                        covers[-1][2].append(ch)              # 표 바로 뒤의 문단(「읽는 법」 등)은 그 표에 붙인다
+                        continue
+                    if ch.name != "h3":
+                        h3 = None
+                        last = None
             if covers:
                 page.append("### 표 — 혼동 쌍")
-                for b in covers:
-                    _, title, _, _, _ = self.box_parts(b)
-                    for tw in b.find_all("div", class_="tw", recursive=False):
-                        page.append(self.callout("cover", f"{self.esc(title)} — 첫 칸만 보고 나머지를 말해 봐", [self.table(tw.find("table"))]))
+                for title, tws, extra in covers:
+                    more = [x for k in extra for x in self.blocks(k, {"link": False})]
+                    for i, tw in enumerate(tws):
+                        page.append(self.callout("cover", f"{self.esc(title)} — 첫 칸만 보고 나머지를 말해 봐",
+                                                 [self.table(tw.find("table"))] + (more if i == len(tws) - 1 else [])))
                         self.stats["혼동 쌍 표"] += 1
             page.append("### 쪽")
             for el in nodes:
